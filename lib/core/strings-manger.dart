@@ -4,4 +4,5 @@ abstract class StringsManger {
   static const String language = "language";
   static const String theme= "theme";
   static const String letsStart = "lets_start";
+
 }
