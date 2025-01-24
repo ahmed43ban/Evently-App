@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       darkTheme: AppStyle.darkTheme,
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      themeMode: AppStyle.isDark?ThemeMode.light:ThemeMode.dark,
+      themeMode: AppStyle.isDark?ThemeMode.dark:ThemeMode.light,
       routes: {
         StartScreen.routName:(_)=>StartScreen(),
       },
