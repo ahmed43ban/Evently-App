@@ -5,7 +5,7 @@ class ThemeProvider extends ChangeNotifier{
   ThemeMode currentTheme =ThemeMode.light;
   initTheme(){
    bool isDark= PrefHelper.getTheme();
-   if(isDark){
+   if(isDark==true){
      currentTheme=ThemeMode.dark;
    }else{
      currentTheme=ThemeMode.light;

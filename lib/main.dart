@@ -11,7 +11,8 @@ void main()async {
   await PrefHelper.init();
   await EasyLocalization.ensureInitialized();
   runApp(EasyLocalization(
-      supportedLocales: [Locale('en'), Locale('ar')],
+      supportedLocales: [Locale('en'),
+        Locale('ar')],
       path: 'assets/translations', // <-- change the path of the translation files
       fallbackLocale: Locale('en'),
       child: ChangeNotifierProvider(
