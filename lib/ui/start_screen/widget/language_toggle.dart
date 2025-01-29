@@ -23,8 +23,10 @@ class _LanguageToggleState extends State<LanguageToggle> {
       }else{
         currentValue=0;
       }
-    });
+      setState(() {
 
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
