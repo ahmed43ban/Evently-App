@@ -12,49 +12,49 @@ class LanguageToggle extends StatefulWidget {
 }
 
 class _LanguageToggleState extends State<LanguageToggle> {
-  int currentValue=0;
+  int currentValue =0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp){
-      if(context.locale.languageCode=="ar"){
-        currentValue=1;
-      }else{
-        currentValue=0;
-      }
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
       setState(() {
-
+        currentValue=(context.locale.languageCode == 'ar')?1:0;
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return  AnimatedToggleSwitch<int>.rolling(
+    return AnimatedToggleSwitch<int>.rolling(
       current: currentValue,
       values: [0, 1],
-      onChanged: (newValue){
-        setState(() {
-          currentValue=newValue;
-          if(currentValue==0){
-            context.setLocale(Locale("en"));
-          }else{
-            context.setLocale(Locale("ar"));
-          }
-        });
+      onChanged: (newValue) {
+        if(currentValue !=newValue){
+          setState(() {
+            currentValue = newValue;
+            if (currentValue == 0) {
+              context.setLocale(Locale("en"));
+            } else {
+              context.setLocale(Locale("ar"));
+            }
+          });
+        }
       },
       iconOpacity: 1,
       style: ToggleStyle(
         borderColor: Theme.of(context).colorScheme.primary,
         indicatorColor: Theme.of(context).colorScheme.primary,
-
       ),
       iconList: [
-        SvgPicture.asset(AssetsManger.englishLan,
+        SvgPicture.asset(
+          AssetsManger.englishLan,
           height: 30,
           width: 30,
         ),
-        SvgPicture.asset(AssetsManger.arabicLan,
+        SvgPicture.asset(
+          AssetsManger.arabicLan,
           height: 30,
           width: 30,
         ),
