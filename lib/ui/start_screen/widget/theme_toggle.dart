@@ -17,18 +17,8 @@ class _ThemeToggleState extends State<ThemeToggle> {
   int currentValue=0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp){
-      if(PrefHelper.getTheme()){
-        currentValue=1;
-      }else{
-        currentValue=0;
-      }
-      setState(() {
-
-      });
-    });
+    currentValue = PrefHelper.getTheme() ? 1 : 0;
   }
   @override
   Widget build(BuildContext context) {
