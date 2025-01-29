@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'color-manger.dart';
 
 class AppStyle {
-  static bool isDark=false;
   static ThemeData lightTheme =ThemeData(
     textTheme: TextTheme(
       labelLarge: TextStyle(
