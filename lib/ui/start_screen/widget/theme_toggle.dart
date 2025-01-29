@@ -1,5 +1,4 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:evently/core/app_style.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/prefshelper.dart';
 import 'package:evently/providers/theme_provider.dart';
