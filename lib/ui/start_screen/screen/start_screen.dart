@@ -3,6 +3,7 @@ import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/ui/onboarding/screen/onBoarding_screen.dart';
 import 'package:evently/ui/start_screen/widget/language_toggle.dart';
 import 'package:evently/ui/start_screen/widget/theme_toggle.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,9 @@ class StartScreen extends StatelessWidget {
                   ],
                 ),
                 Gap(28),
-                CustomButton(title: StringsManger.letsStart.tr(),onPressed: (){},)
+                CustomButton(title: StringsManger.letsStart.tr(),onPressed: (){
+                  Navigator.pushReplacementNamed(context, OnboardingScreen.routName);
+                },)
               ],
             )
           ],

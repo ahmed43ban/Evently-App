@@ -6,6 +6,7 @@ abstract class AssetsManger{
   static const String beingCreativeDark2 = "assets/images/beingCreativeDark2.png";
   static const String beingCreativeDark3 = "assets/images/beingCreativeDark3.png";
   static const String beingCreative3 = "assets/images/being-creative 3.png";
+  static const String hotTrending ="assets/images/hot-trending.png";
   static const String arabicLan = "assets/images/EG.svg";
   static const String englishLan = "assets/images/LR.svg";
   static const String moonIcon = "assets/images/Moon.svg";
