@@ -16,5 +16,5 @@ abstract class AssetsManger{
   static const String googleIcon = "assets/images/google_icon.svg";
   static const String personIcon = "assets/images/person.svg";
   static const String emailIcon = "assets/images/email.svg";
-  static const String logo2 = "assets/images/logo2.png";
+  static const String logo2 = "assets/images/Logo2.png";
 }

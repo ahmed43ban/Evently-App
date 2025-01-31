@@ -9,4 +9,5 @@ abstract class ColorManger {
   static const Color darkPrimary = Color(0xff5669FF);
   static const Color darkSecondary = Color(0xffF4EBDC);
   static const Color darkTeritary = Color(0xffFF5659);
+  static const Color lightTextField = Color(0xff7B7B7B);
 }
