@@ -2,10 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/ui/onboarding/screen/onBoarding_screen.dart';
 import 'package:evently/ui/start_screen/widget/language_toggle.dart';
 import 'package:evently/ui/start_screen/widget/theme_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class StartScreen extends StatelessWidget {
   static const String routName= "start";
@@ -13,6 +16,7 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(AssetsManger.logo),
@@ -22,7 +26,9 @@ class StartScreen extends StatelessWidget {
         padding:  EdgeInsets.symmetric(vertical: 28,horizontal: 16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(child: Image.asset(AssetsManger.beingCreative)),
+            Expanded(child: Image.asset(themeProvider.currentTheme==ThemeMode.light
+                ?AssetsManger.beingCreative
+                :AssetsManger.beingCreativeDark)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -52,7 +58,9 @@ class StartScreen extends StatelessWidget {
                   ],
                 ),
                 Gap(28),
-                CustomButton(title: StringsManger.letsStart.tr(),onPressed: (){},)
+                CustomButton(title: StringsManger.letsStart.tr(),onPressed: (){
+                  Navigator.pushReplacementNamed(context, OnboardingScreen.routName);
+                },)
               ],
             )
           ],
