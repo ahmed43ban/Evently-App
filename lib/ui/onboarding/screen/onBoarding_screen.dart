@@ -1,6 +1,7 @@
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/ui/login_screen/screen/login_screen.dart';
 import 'package:evently/ui/onboarding/widget/onPage_widget.dart';
 import 'package:evently/ui/register_screen/screen/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 milliseconds: 100),
                                 curve: Curves.decelerate);
                           }else{
-                              Navigator.pushReplacementNamed(context, RegisterScreen.routName);
+                              Navigator.pushReplacementNamed(context, LoginScreen.routName);
 
                           }
                     },

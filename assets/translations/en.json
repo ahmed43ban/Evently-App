@@ -23,5 +23,9 @@
   "or": "Or",
   "login_with_google": "Login With Google",
   "forget_password": "Forget Password",
-  "reset_password": "Reset Password"
+  "reset_password": "Reset Password",
+  "not_empty": "Shouldn't  be empty",
+  "email_not_valid": "Email not valid",
+  "atlleast_eight": "Password should be at least 8 characters",
+  "dont_match": "Password don't match"
 }

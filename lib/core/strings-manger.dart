@@ -19,9 +19,13 @@ abstract class StringsManger {
   static const String already_have_account_ask="already_have_account?";
   static const String login="login";
   static const String forget_passwordask="forget_password?";
-  static const String dont_have_account_ask="don’t_have_account?";
+  static const String dont_have_account_ask="dont_have_account?";
   static const String or="or";
   static const String login_with_google="login_with_google";
   static const String forget_password="forget_password";
   static const String reset_password="reset_password";
+  static const String not_empty="not_empty";
+  static const String email_not_valid="email_not_valid";
+  static const String atlleast_eight="atlleast_eight";
+  static const String dont_match="dont_match";
 }

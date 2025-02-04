@@ -37,6 +37,7 @@ class AppStyle {
         onPrimary: ColorManger.darkSecondary
       ),
       appBarTheme: AppBarTheme(
+        scrolledUnderElevation: 0,
         titleTextStyle: TextStyle(
           fontWeight: FontWeight.w400,
           color: ColorManger.lightSecondary,
@@ -80,6 +81,10 @@ class AppStyle {
           onPrimary: ColorManger.lightSecondary
       ),
       appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(
+          color: ColorManger.lightPrimary
+        ),
+        scrolledUnderElevation: 0,
         titleTextStyle: TextStyle(
             fontWeight: FontWeight.w400,
             color: ColorManger.darkPrimary,

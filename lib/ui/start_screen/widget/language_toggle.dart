@@ -14,18 +14,11 @@ class LanguageToggle extends StatefulWidget {
 class _LanguageToggleState extends State<LanguageToggle> {
   int currentValue =0;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-      currentValue=(context.locale.languageCode == 'ar')?1:0;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedToggleSwitch<int>.rolling(
-      current: currentValue,
+      current:       currentValue=(context.locale.languageCode == 'ar')?1:0,
       values: [0, 1],
       onChanged: (newValue) {
           setState(() {

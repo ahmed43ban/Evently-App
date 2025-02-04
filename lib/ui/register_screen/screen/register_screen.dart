@@ -1,8 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
+import 'package:evently/core/color-manger.dart';
+import 'package:evently/core/constants.dart';
+import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/custonField.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/ui/start_screen/widget/language_toggle.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routName="register";
@@ -14,34 +19,123 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController nameController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController rePasswordController;
   GlobalKey<FormState>formKey=GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     nameController=TextEditingController();
+    emailController=TextEditingController();
+    passwordController=TextEditingController();
+    rePasswordController=TextEditingController();
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    rePasswordController.dispose();
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(StringsManger.register.tr()),
-      ),
-      body: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            Image.asset(AssetsManger.logo2),
-            SizedBox(height: 16,),
-            Custonfield(hint: StringsManger.name.tr(),prefix: AssetsManger.personIcon,
-            controller: nameController,)
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(StringsManger.register.tr()),
+        ),
+        body: Form(
+          key: formKey,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Image.asset(AssetsManger.logo2),
+                  Gap(16),
+                  Custonfield(
+                    validator: (value){
+                      if(value==null ||value.isEmpty){
+                        return StringsManger.not_empty.tr();
+                      }
+                      return null;
+                    },
+                    hint: StringsManger.name.tr(),prefix: AssetsManger.personIcon,
+                  controller: nameController,keyboard: TextInputType.name,),
+                  Gap(8),
+                  Custonfield(
+                      validator: (value){
+                        if(value==null ||value.isEmpty){
+                          return StringsManger.not_empty.tr();
+                        }
+                        if(RegExp(emailRegex).hasMatch(value)){
+                          return StringsManger.email_not_valid.tr();
+                        }
+                        return null;
+                      },
+                      hint: StringsManger.email.tr(), prefix: AssetsManger.emailIcon,
+                      controller: emailController,keyboard: TextInputType.emailAddress),
+                  Gap(8),
+                  Custonfield(
+                      validator: (value){
+                        if(value==null ||value.isEmpty){
+                          return StringsManger.not_empty.tr();
+                        }
+                        if(value.length<8){
+                          return StringsManger.atlleast_eight.tr();
+                        }
+                        return null;
+                      },
+                      isObscure:true,
+                      hint: StringsManger.password.tr(),
+                      prefix: AssetsManger.passwordIcon,
+                      controller: passwordController,
+                      keyboard: TextInputType.visiblePassword),
+                  Gap(8),
+                  Custonfield(
+                      validator: (value){
+                        if(value !=passwordController.text){
+                          return StringsManger.dont_match.tr();
+                        }
+                        return null;
+                      },
+                      isObscure:true,
+                      hint: StringsManger.re_password.tr(),
+                      prefix: AssetsManger.passwordIcon,
+                      controller: rePasswordController, keyboard: TextInputType.visiblePassword),
+                  Gap(16),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    width: double.infinity,
+                    child: CustomButton(title: StringsManger.create_account.tr(), onPressed: (){
+      
+                    }),
+                  ),
+                  Gap(16),
+                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(StringsManger.already_have_account_ask.tr(),
+                      style: Theme.of(context).textTheme.titleSmall,),
+                      TextButton(onPressed: (){
+                        formKey.currentState!.validate();
+                      },
+                          child:Text(StringsManger.login.tr(),
+                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: ColorManger.lightPrimary,
+                                decoration: TextDecoration.underline,
+                                decorationColor: ColorManger.lightPrimary
+                              )) )
+                    ],
+                  ),
+                  LanguageToggle()
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
