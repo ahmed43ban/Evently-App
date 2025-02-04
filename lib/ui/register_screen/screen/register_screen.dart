@@ -112,7 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: EdgeInsets.symmetric(vertical: 16),
                     width: double.infinity,
                     child: CustomButton(title: StringsManger.create_account.tr(), onPressed: (){
-      
+                      formKey.currentState!.validate();
                     }),
                   ),
                   Gap(16),
@@ -120,9 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       Text(StringsManger.already_have_account_ask.tr(),
                       style: Theme.of(context).textTheme.titleSmall,),
-                      TextButton(onPressed: (){
-                        formKey.currentState!.validate();
-                      },
+                      TextButton(onPressed: (){},
                           child:Text(StringsManger.login.tr(),
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 color: ColorManger.lightPrimary,
