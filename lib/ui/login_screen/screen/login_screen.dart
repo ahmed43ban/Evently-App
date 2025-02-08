@@ -1,13 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
+import 'package:evently/core/firebase_codes.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/custonField.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
 import 'package:evently/ui/register_screen/screen/register_screen.dart';
+import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:evently/ui/start_screen/widget/language_toggle.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -107,9 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     child: CustomButton(
                         title: StringsManger.login.tr(), onPressed: () {
-                          if(formKey.currentState!.validate()){
-                            print("Login done");
-                          }
+                          loginAccount();
                     }),
                   ),
                   Row(
@@ -197,5 +199,35 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+  loginAccount()async{
+    if(formKey.currentState!.validate()){
+      try {
+        DialogUtils.showLoadingDialog(context);
+        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text
+        );
+        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      } on FirebaseAuthException catch (e) {
+        Navigator.pop(context);
+        if (e.code == FirebaseAuthCodes.userNotFound) {
+          DialogUtils.showMessageDialog(context: context,
+              message: 'No user found for that email.',
+              buttonTitle: "ok",
+              positiveBtnClick: (){
+                Navigator.pop(context);
+              });
+        } else if (e.code == FirebaseAuthCodes.wrongPass) {
+          DialogUtils.showMessageDialog(context: context,
+              message: 'Wrong password provided for that user.',
+              buttonTitle: "ok",
+              positiveBtnClick: (){
+                Navigator.pop(context);
+              });
+        }
+      }
+    }
   }
 }
