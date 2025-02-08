@@ -17,4 +17,12 @@ abstract class AssetsManger{
   static const String personIcon = "assets/images/person.svg";
   static const String emailIcon = "assets/images/email.svg";
   static const String logo2 = "assets/images/Logo2.png";
+  static const String homeSelected = "assets/images/home_selcted.svg";
+  static const String homeUnSelected = "assets/images/home_unselcted.svg";
+  static const String loveSelected = "assets/images/love_selcted.svg";
+  static const String loveUnSelected = "assets/images/love_unselcted.svg";
+  static const String MapSelected = "assets/images/Map_selcted.svg";
+  static const String MapUnSelected = "assets/images/Map_unselcted.svg";
+  static const String profileSelected = "assets/images/profile_selcted.svg";
+  static const String profileUnSelected = "assets/images/profile_unselcted.svg";
 }

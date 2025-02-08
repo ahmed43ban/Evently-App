@@ -4,7 +4,21 @@ import 'color-manger.dart';
 
 class AppStyle {
   static ThemeData lightTheme =ThemeData(
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: ColorManger.lightPrimary,
+      type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+        fontSize: 12
+      )
+    ),
     textTheme: TextTheme(
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.w700,
+        fontSize: 24,
+        color: ColorManger.backGround
+      ),
         bodySmall: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
@@ -48,7 +62,19 @@ class AppStyle {
       )
   );
   static ThemeData darkTheme=ThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: ColorManger.backGroundDark,
+          type: BottomNavigationBarType.fixed,
+          selectedLabelStyle: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 12)),
     textTheme: TextTheme(
+        headlineMedium: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 24,
+            color: ColorManger.backGround
+        ),
       bodySmall: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w500,
