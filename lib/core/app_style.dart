@@ -4,6 +4,10 @@ import 'color-manger.dart';
 
 class AppStyle {
   static ThemeData lightTheme =ThemeData(
+    tabBarTheme: TabBarTheme(
+      unselectedLabelColor:Colors.white ,
+      labelColor: ColorManger.lightPrimary,
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: ColorManger.lightPrimary,
       type: BottomNavigationBarType.fixed,
@@ -14,6 +18,11 @@ class AppStyle {
       )
     ),
     textTheme: TextTheme(
+      displaySmall: TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+      ),
       headlineMedium: TextStyle(
         fontWeight: FontWeight.w700,
         fontSize: 24,
@@ -43,12 +52,15 @@ class AppStyle {
     fontFamily: "Inter",
       scaffoldBackgroundColor: ColorManger.backGround,
       colorScheme: ColorScheme.light(
+          outline: Colors.white,
           onTertiaryContainer: ColorManger.lightTextField,
         onSecondaryContainer: ColorManger.lightTextField,
         primary: ColorManger.lightPrimary,
         secondary: ColorManger.lightSecondary,
         tertiary: ColorManger.lightTeritary,
-        onPrimary: ColorManger.darkSecondary
+        onPrimary: ColorManger.darkSecondary,
+        inversePrimary: Colors.white,
+        onPrimaryFixedVariant: ColorManger.lightPrimary
       ),
       appBarTheme: AppBarTheme(
         scrolledUnderElevation: 0,
@@ -62,6 +74,10 @@ class AppStyle {
       )
   );
   static ThemeData darkTheme=ThemeData(
+      tabBarTheme: TabBarTheme(
+        unselectedLabelColor:Colors.white ,
+        labelColor: Colors.white,
+      ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: ColorManger.backGroundDark,
           type: BottomNavigationBarType.fixed,
@@ -70,6 +86,11 @@ class AppStyle {
               fontWeight: FontWeight.w700,
               fontSize: 12)),
     textTheme: TextTheme(
+        displaySmall: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
         headlineMedium: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 24,
@@ -99,12 +120,15 @@ class AppStyle {
       fontFamily: "Inter",
       scaffoldBackgroundColor: ColorManger.backGroundDark,
       colorScheme: ColorScheme.dark(
+        outline: ColorManger.backGroundDark,
         onTertiaryContainer: Colors.white,
           onSecondaryContainer: ColorManger.lightPrimary,
           primary: ColorManger.darkPrimary,
           secondary: ColorManger.darkSecondary,
           tertiary: ColorManger.darkTeritary,
-          onPrimary: ColorManger.lightSecondary
+          onPrimary: ColorManger.lightSecondary,
+          inversePrimary: ColorManger.lightPrimary,
+          onPrimaryFixedVariant: Colors.white
       ),
       appBarTheme: AppBarTheme(
         iconTheme: IconThemeData(

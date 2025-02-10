@@ -25,4 +25,12 @@ abstract class AssetsManger{
   static const String MapUnSelected = "assets/images/Map_unselcted.svg";
   static const String profileSelected = "assets/images/profile_selcted.svg";
   static const String profileUnSelected = "assets/images/profile_unselcted.svg";
+  static const String sport_event = "assets/images/bike.svg";
+  static const String book_event = "assets/images/book-open.svg";
+  static const String cake_event = "assets/images/cake.svg";
+  static const String all_event = "assets/images/Compass.svg";
+  static const String search = "assets/images/Search.svg";
+  static const String birthday = "assets/images/birthday.png";
+  static const String sportcard = "assets/images/sportcard.png";
+  static const String book_club = "assets/images/Book_Club.png";
 }

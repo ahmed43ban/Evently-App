@@ -5,7 +5,7 @@ import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
 import 'package:evently/core/firebase_codes.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
-import 'package:evently/core/reusable_componenes/custonField.dart';
+import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:evently/ui/login_screen/screen/login_screen.dart';
@@ -62,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Image.asset(AssetsManger.logo2),
                   Gap(16),
-                  Custonfield(
+                  CustomField(
                     validator: (value){
                       if(value==null ||value.isEmpty){
                         return StringsManger.not_empty.tr();
@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hint: StringsManger.name.tr(),prefix: AssetsManger.personIcon,
                   controller: nameController,keyboard: TextInputType.name,),
                   Gap(8),
-                  Custonfield(
+                  CustomField(
                       validator: (value){
                         if(value==null ||value.isEmpty){
                           return StringsManger.not_empty.tr();
@@ -85,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hint: StringsManger.email.tr(), prefix: AssetsManger.emailIcon,
                       controller: emailController,keyboard: TextInputType.emailAddress),
                   Gap(8),
-                  Custonfield(
+                  CustomField(
                       validator: (value){
                         if(value==null ||value.isEmpty){
                           return StringsManger.not_empty.tr();
@@ -101,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: passwordController,
                       keyboard: TextInputType.visiblePassword),
                   Gap(8),
-                  Custonfield(
+                  CustomField(
                       validator: (value){
                         if(value !=passwordController.text){
                           return StringsManger.dont_match.tr();
@@ -159,16 +159,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Navigator.pop(context);
         if (e.code == FirebaseAuthCodes.weakPass) {
           DialogUtils.showMessageDialog(context: context,
-              message: 'The password provided is too weak.',
-              buttonTitle: "ok",
+              message: StringsManger.pass_weak.tr(),
+              buttonTitle: StringsManger.ok.tr(),
               positiveBtnClick: (){
             Navigator.pop(context);
               });
 
         } else if (e.code == FirebaseAuthCodes.emailAlreadyInUse) {
           DialogUtils.showMessageDialog(context: context,
-              message: 'The account already exists for that email.',
-              buttonTitle: "ok",
+              message: StringsManger.account_already_exists.tr(),
+              buttonTitle: StringsManger.ok.tr(),
               positiveBtnClick: (){
                 Navigator.pop(context);
               });

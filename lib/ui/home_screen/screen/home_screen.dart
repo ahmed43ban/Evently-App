@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
+import 'package:evently/core/strings-manger.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/home_tab.dart';
 import 'package:evently/ui/home_screen/tabs/love_tab/love_tab.dart';
 import 'package:evently/ui/home_screen/tabs/map_tab/map_tab.dart';
@@ -27,37 +29,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        centerTitle: false,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(24),
-            bottomRight: Radius.circular(24)
+      floatingActionButton: FloatingActionButton(
+          onPressed: (){},
+        shape: StadiumBorder(
+          side: BorderSide(
+            color: Colors.white,
+            width: 5
           )
         ),
-        toolbarHeight: 174,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Welcome Back ✨",style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w400
-            ),),
-            Text("John Safwat",style: Theme.of(context).textTheme.headlineMedium,),
-            Gap(8),
-            Row(
-              children: [
-                SvgPicture.asset(AssetsManger.MapUnSelected),
-                Text("Cairo , Egypt",style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500
-                ),)
-              ],
-            )
-          ],
-        ),
+        child:IconButton(onPressed: (){}, icon: Icon(Icons.add,size: 40,)) ,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.white,
@@ -72,19 +54,19 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
                 icon:SvgPicture.asset(AssetsManger.homeUnSelected) ,
                 activeIcon: SvgPicture.asset(AssetsManger.homeSelected),
-                label: "Home"),
+                label: StringsManger.home.tr()),
             BottomNavigationBarItem(
                 icon:SvgPicture.asset(AssetsManger.MapUnSelected) ,
                 activeIcon: SvgPicture.asset(AssetsManger.MapSelected),
-                label: "Map"),
+                label: StringsManger.map.tr()),
             BottomNavigationBarItem(
                 icon:SvgPicture.asset(AssetsManger.loveUnSelected) ,
                 activeIcon: SvgPicture.asset(AssetsManger.loveSelected),
-                label: "Love"),
+                label: StringsManger.love.tr()),
             BottomNavigationBarItem(
                 icon:SvgPicture.asset(AssetsManger.profileUnSelected) ,
                 activeIcon: SvgPicture.asset(AssetsManger.profileSelected),
-                label: "Profile"),
+                label: StringsManger.profile.tr()),
           ]),
       body: tabs[selectedIndex]
     );

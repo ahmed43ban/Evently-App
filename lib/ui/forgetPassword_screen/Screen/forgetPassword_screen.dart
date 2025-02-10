@@ -3,7 +3,7 @@ import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/constants.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
-import 'package:evently/core/reusable_componenes/custonField.dart';
+import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/ui/start_screen/widget/language_toggle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,7 +53,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 children: [
                   SvgPicture.asset(AssetsManger.changeSetting),
                   Gap(16),
-                  Custonfield(
+                  CustomField(
                       validator: (value){
                         if(value==null ||value.isEmpty){
                           return StringsManger.not_empty.tr();
@@ -76,7 +76,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             await FirebaseAuth.instance
                                 .sendPasswordResetEmail(email: emailController.text);
                             Navigator.pop(context);
-                            DialogUtils.showToast("Check Your Email");
+                            DialogUtils.showToast(StringsManger.check_mail.tr());
                           };
                         }),
                   ),

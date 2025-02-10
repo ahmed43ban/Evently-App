@@ -28,4 +28,27 @@ abstract class StringsManger {
   static const String email_not_valid="email_not_valid";
   static const String atlleast_eight="atlleast_eight";
   static const String dont_match="dont_match";
+  static const String wrong_pass="wrong_pass";
+  static const String not_founded_mail="not_founded_mail";
+  static const String account_already_exists="account_already_exists";
+  static const String pass_weak="pass_weak";
+  static const String ok="ok";
+  static const String check_mail="check_mail";
+  static const String home="home";
+  static const String map="map";
+  static const String love="love";
+  static const String profile="profile";
+  static const String welcome_back="welcome_back";
+  static const String const_p_name="const_p_name";
+  static const String const_location="const_location";
+  static const String all="all";
+  static const String sport="sport";
+  static const String birthday="birthday";
+  static const String book_club="book_club";
+  static const String search="search";
+  static const String language1="English";
+  static const String language2="العربية";
+  static const String theme1="theme1";
+  static const String theme2="theme2";
+  static const String log_out="log_out";
 }
