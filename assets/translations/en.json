@@ -48,5 +48,6 @@
   "search": "Search for Event",
   "theme1": "Light",
   "theme2": "Dark",
-  "log_out": "Log Out"
+  "log_out": "Log Out",
+  "create_event": "Create Event"
 }

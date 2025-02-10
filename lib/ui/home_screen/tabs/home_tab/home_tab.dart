@@ -62,8 +62,14 @@ class _HomeTabState extends State<HomeTab> {
                   isScrollable: true,
                   dividerHeight: 0,
                     tabs: [
-                  Tab(child: Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 10),
+                  Tab(child: Container(
+                    padding:  EdgeInsets.all( 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white
+                      ),
+                        borderRadius: BorderRadius.circular(46)
+                    ),
                     child: Row(
                         children: [
                           SvgPicture.asset(AssetsManger.all_event,colorFilter: ColorFilter.mode(
@@ -77,8 +83,14 @@ class _HomeTabState extends State<HomeTab> {
                         ],
                       ),
                   ),),
-                  Tab(child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                  Tab(child: Container(
+                    padding:  EdgeInsets.all( 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.white
+                        ),
+                        borderRadius: BorderRadius.circular(46)
+                    ),
                     child: Row(
                         children: [
                           SvgPicture.asset(AssetsManger.sport_event,colorFilter: ColorFilter.mode(
@@ -92,8 +104,14 @@ class _HomeTabState extends State<HomeTab> {
                         ],
                       ),
                   ),),
-                  Tab(child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                  Tab(child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.white
+                        ),
+                        borderRadius: BorderRadius.circular(46)
+                    ),
+                    padding: EdgeInsets.all( 10),
                     child: Row(
                         children: [
                           SvgPicture.asset(AssetsManger.cake_event,colorFilter: ColorFilter.mode(
@@ -107,8 +125,14 @@ class _HomeTabState extends State<HomeTab> {
                         ],
                       ),
                   ),),
-                  Tab(child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                  Tab(child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.white
+                        ),
+                      borderRadius: BorderRadius.circular(46)
+                    ),
+                    padding: EdgeInsets.all( 10),
                     child: Row(
                         children: [
                           SvgPicture.asset(AssetsManger.book_event,colorFilter: ColorFilter.mode(

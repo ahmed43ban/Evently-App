@@ -4,6 +4,7 @@ import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/theme_provider.dart';
 import 'package:evently/ui/home_screen/tabs/profile_tab/widget/languagesheet.dart';
 import 'package:evently/ui/home_screen/tabs/profile_tab/widget/themesheet.dart';
+import 'package:evently/ui/login_screen/screen/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -153,6 +154,7 @@ class ProfileTab extends StatelessWidget {
                         backgroundColor: Colors.redAccent),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
+                      Navigator.pushReplacementNamed(context, LoginScreen.routName);
                     },
                     child: Row(
                       children: [

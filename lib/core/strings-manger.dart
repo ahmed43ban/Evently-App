@@ -51,4 +51,5 @@ abstract class StringsManger {
   static const String theme1="theme1";
   static const String theme2="theme2";
   static const String log_out="log_out";
+  static const String create_event="create_event";
 }
