@@ -52,4 +52,16 @@ abstract class StringsManger {
   static const String theme2="theme2";
   static const String log_out="log_out";
   static const String create_event="create_event";
+  static const String title="title";
+  static const String desc="desc";
+  static const String event_title="event_title";
+  static const String event_desc="event_desc";
+  static const String event_date="event_date";
+  static const String event_time="event_time";
+  static const String choose_date="choose_date";
+  static const String choose_time="choose_time";
+  static const String add_event="add_event";
+  static const String choose_location="choose_location";
+  static const String location="location";
+  static const String lang_code="lang_code";
 }

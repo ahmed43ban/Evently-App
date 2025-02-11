@@ -3,20 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomField extends StatefulWidget {
+  int maxLines;
   bool field;
   Color borderColor;
   String? Function(String?)? validator;
   String hint;
-  String prefix;
+  String? prefix;
   TextInputType keyboard;
   TextEditingController controller;
   bool isObscure;
-   CustomField({super.key,
+   CustomField({
+     this.maxLines=1,
      this.field=true,
      this.borderColor= ColorManger.lightPrimary,
      required this.validator,
      this.isObscure=false,
-     required this.hint,required this.prefix,required this.controller,required this.keyboard});
+     required this.hint,
+     this.prefix,
+     required this.controller,required this.keyboard});
 
   @override
   State<CustomField> createState() => _CustomFieldState();
@@ -27,6 +31,7 @@ class _CustomFieldState extends State<CustomField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.maxLines,
       validator: widget.validator,
       controller: widget.controller,
       keyboardType: widget.keyboard,
@@ -82,9 +87,11 @@ class _CustomFieldState extends State<CustomField> {
           maxHeight: 24,
           maxWidth: 60,
         ),
-        prefixIcon: Padding(
+        prefixIcon: widget.prefix == null
+            ?null
+            :Padding(
           padding:  EdgeInsets.symmetric(horizontal: 16),
-          child: SvgPicture.asset(widget.prefix,
+          child: SvgPicture.asset(widget.prefix!,
           width: 24,
           height: 24,
           colorFilter: ColorFilter.mode(widget.field

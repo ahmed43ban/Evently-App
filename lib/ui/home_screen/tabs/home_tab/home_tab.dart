@@ -1,10 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/providers/theme_provider.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/widgets/event_item.dart';
+import 'package:evently/ui/home_screen/tabs/profile_tab/widget/languagesheet.dart';
+import 'package:evently/ui/home_screen/tabs/profile_tab/widget/themesheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -16,6 +20,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
     return DefaultTabController(
       length: 4,
       child: Column(
@@ -32,11 +37,56 @@ class _HomeTabState extends State<HomeTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(StringsManger.welcome_back.tr(),style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400
-                ),),
-                Text(StringsManger.const_p_name.tr(),style: Theme.of(context).textTheme.headlineMedium,),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(StringsManger.welcome_back.tr(),style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400
+                          ),),
+                          Text(StringsManger.const_p_name.tr(),style: Theme.of(context).textTheme.headlineMedium,),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            showModalBottomSheet(context: context,
+                              builder: (context) => ThemeSheet(),);
+                          },
+                            child: SvgPicture.asset(
+                              themeProvider.currentTheme == ThemeMode.dark
+                                  ? AssetsManger.moonIcon
+                                  : AssetsManger.sunIcon,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn),
+                              height: 30,
+                              width: 30,
+                            )),
+                        Gap(16),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)
+                            )
+                          ),
+                          onPressed: (){
+                            showModalBottomSheet(context: context,
+                              builder: (context) => LanguageSheet(),);
+                        },
+                            child: Text(StringsManger.lang_code.tr(),
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),)
+                      ],
+                    )
+                  ],
+                ),
                 Gap(8),
                 Row(
                   children: [

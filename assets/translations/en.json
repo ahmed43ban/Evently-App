@@ -49,5 +49,17 @@
   "theme1": "Light",
   "theme2": "Dark",
   "log_out": "Log Out",
-  "create_event": "Create Event"
+  "create_event": "Create Event",
+  "title": "Title",
+  "desc": "Description",
+  "event_title": "Event Title",
+  "event_desc": "Event Description",
+  "event_date": "Event Date",
+  "event_time": "Event Time",
+  "choose_date": "Choose Date",
+  "choose_time": "Choose Time",
+  "add_event": "Add Event",
+  "choose_location": "Choose Event Location",
+  "location": "Location",
+  "lang_code": "En"
 }
