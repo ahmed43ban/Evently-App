@@ -1,27 +1,37 @@
+import 'package:evently/core/color-manger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Custonfield extends StatefulWidget {
+class CustomField extends StatefulWidget {
+  int maxLines;
+  bool field;
+  Color borderColor;
   String? Function(String?)? validator;
   String hint;
-  String prefix;
+  String? prefix;
   TextInputType keyboard;
   TextEditingController controller;
   bool isObscure;
-   Custonfield({super.key,
+   CustomField({
+     this.maxLines=1,
+     this.field=true,
+     this.borderColor= ColorManger.lightPrimary,
      required this.validator,
      this.isObscure=false,
-     required this.hint,required this.prefix,required this.controller,required this.keyboard});
+     required this.hint,
+     this.prefix,
+     required this.controller,required this.keyboard});
 
   @override
-  State<Custonfield> createState() => _CustonfieldState();
+  State<CustomField> createState() => _CustomFieldState();
 }
 
-class _CustonfieldState extends State<Custonfield> {
+class _CustomFieldState extends State<CustomField> {
   bool PasswordToggle=true;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.maxLines,
       validator: widget.validator,
       controller: widget.controller,
       keyboardType: widget.keyboard,
@@ -31,25 +41,29 @@ class _CustonfieldState extends State<Custonfield> {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.onSecondaryContainer
+            color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
+                :widget.borderColor
           )
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.onSecondaryContainer
+                color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
+                    :widget.borderColor
             )
         ),
         focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.onSecondaryContainer
+                color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
+                    :widget.borderColor
             )
         ),
         errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.onSecondaryContainer
+                color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
+                    :widget.borderColor
             )
         ),
         hintText: widget.hint,
@@ -64,17 +78,25 @@ class _CustonfieldState extends State<Custonfield> {
               ?Icons.visibility_off_rounded:Icons.visibility_rounded,
               size:24 ,
               color: Theme.of(context).colorScheme.onTertiaryContainer,)):null,
-        hintStyle:Theme.of(context).textTheme.bodySmall,
+        hintStyle:widget.field
+            ?Theme.of(context).textTheme.bodySmall
+            :Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: widget.borderColor
+        ),
         prefixIconConstraints: BoxConstraints(
           maxHeight: 24,
           maxWidth: 60,
         ),
-        prefixIcon: Padding(
+        prefixIcon: widget.prefix == null
+            ?null
+            :Padding(
           padding:  EdgeInsets.symmetric(horizontal: 16),
-          child: SvgPicture.asset(widget.prefix,
+          child: SvgPicture.asset(widget.prefix!,
           width: 24,
           height: 24,
-          colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onTertiaryContainer,
+          colorFilter: ColorFilter.mode(widget.field
+              ?Theme.of(context).colorScheme.onTertiaryContainer
+              :widget.borderColor,
               BlendMode.srcIn),),
         ),
       ),

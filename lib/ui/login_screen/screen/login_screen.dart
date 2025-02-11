@@ -5,7 +5,7 @@ import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
 import 'package:evently/core/firebase_codes.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
-import 'package:evently/core/reusable_componenes/custonField.dart';
+import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
 import 'package:evently/ui/register_screen/screen/register_screen.dart';
@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Image.asset(AssetsManger.logo2),
                   Gap(16),
-                  Custonfield(
+                  CustomField(
                       validator: (value){
                         if(value==null ||value.isEmpty){
                           return StringsManger.not_empty.tr();
@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       hint: StringsManger.email.tr(), prefix: AssetsManger.emailIcon,
                       controller: emailController,keyboard: TextInputType.emailAddress),
                   Gap(8),
-                  Custonfield(
+                  CustomField(
                       validator: (value){
                         if(value==null ||value.isEmpty){
                           return StringsManger.not_empty.tr();
@@ -214,15 +214,15 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pop(context);
         if (e.code == FirebaseAuthCodes.userNotFound) {
           DialogUtils.showMessageDialog(context: context,
-              message: 'No user found for that email.',
-              buttonTitle: "ok",
+              message: StringsManger.not_founded_mail.tr(),
+              buttonTitle: StringsManger.ok.tr(),
               positiveBtnClick: (){
                 Navigator.pop(context);
               });
         } else if (e.code == FirebaseAuthCodes.wrongPass) {
           DialogUtils.showMessageDialog(context: context,
-              message: 'Wrong password provided for that user.',
-              buttonTitle: "ok",
+              message: StringsManger.wrong_pass.tr(),
+              buttonTitle: StringsManger.ok.tr(),
               positiveBtnClick: (){
                 Navigator.pop(context);
               });
