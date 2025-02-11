@@ -64,4 +64,7 @@ abstract class StringsManger {
   static const String choose_location="choose_location";
   static const String location="location";
   static const String lang_code="lang_code";
+  static const String title_birthday="title_birthday";
+  static const String const_day="const_day";
+  static const String const_month="const_month";
 }

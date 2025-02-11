@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
+import 'package:evently/core/strings-manger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -30,8 +32,8 @@ class EventItem extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Text("21",style: Theme.of(context).textTheme.titleMedium,),
-                  Text("Nov",style: Theme.of(context).textTheme.titleMedium,)
+                  Text(StringsManger.const_day.tr(),style: Theme.of(context).textTheme.titleMedium,),
+                  Text(StringsManger.const_month.tr(),style: Theme.of(context).textTheme.titleMedium,)
                 ],
               ),
             ),
@@ -44,7 +46,7 @@ class EventItem extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Expanded(child: Text("This is a Birthday Party ",style: Theme.of(context).textTheme.displaySmall,)),
+                  Expanded(child: Text(StringsManger.title_birthday.tr(),style: Theme.of(context).textTheme.displaySmall,)),
                   SvgPicture.asset(AssetsManger.loveSelected,height: 24,width: 24,
                     colorFilter:ColorFilter.mode(ColorManger.lightPrimary,
                         BlendMode.srcIn) ,
