@@ -8,6 +8,9 @@ class AppStyle {
       unselectedLabelColor:Colors.white ,
       labelColor: ColorManger.lightPrimary,
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ColorManger.lightPrimary,
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: ColorManger.lightPrimary,
       type: BottomNavigationBarType.fixed,
@@ -77,6 +80,9 @@ class AppStyle {
       tabBarTheme: TabBarTheme(
         unselectedLabelColor:Colors.white ,
         labelColor: Colors.white,
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorManger.backGroundDark,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: ColorManger.backGroundDark,

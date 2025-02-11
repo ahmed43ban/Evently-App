@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 5
           )
         ),
-        child: Icon(Icons.add,size: 40,) ,
+        child: Icon(Icons.add,size: 40,color: Colors.white,) ,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(

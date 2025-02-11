@@ -61,5 +61,8 @@
   "add_event": "Add Event",
   "choose_location": "Choose Event Location",
   "location": "Location",
-  "lang_code": "En"
+  "lang_code": "En",
+  "title_birthday": "This is a Birthday Party ",
+  "const_day": "21",
+  "const_month": "Nov"
 }

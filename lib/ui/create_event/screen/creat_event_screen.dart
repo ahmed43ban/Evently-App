@@ -5,10 +5,10 @@ import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
-import 'package:evently/ui/start_screen/widget/language_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+
 
 class CreateEventScreen extends StatefulWidget {
   static const String routeName="createEvent";
@@ -200,7 +200,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   Gap(16),
                   Row(
                     children: [
-                      SvgPicture.asset(AssetsManger.date_mark),
+                      SvgPicture.asset(AssetsManger.date_mark,colorFilter: ColorFilter.mode(
+                          Theme.of(context).colorScheme.secondary,
+                          BlendMode.srcIn),),
                       Gap(8),
                       Expanded(
                         child: Text(
@@ -224,7 +226,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   Row(
                     children: [
-                      SvgPicture.asset(AssetsManger.time_mark),
+                      SvgPicture.asset(AssetsManger.time_mark,colorFilter: ColorFilter.mode(
+                          Theme.of(context).colorScheme.secondary,
+                          BlendMode.srcIn)),
                       Gap(8),
                       Expanded(
                         child: Text(

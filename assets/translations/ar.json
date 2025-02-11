@@ -61,5 +61,8 @@
   "add_event": "اضافة الحدث",
   "choose_location": "أختار موقع الحدث",
   "location": "الموقع",
-  "lang_code": "عربي"
+  "lang_code": "عربي",
+  "title_birthday": "هذه حفلة عيد ميلاد ",
+  "const_day": "21",
+  "const_month": "نوفمبر"
 }
