@@ -12,22 +12,25 @@ class CustomField extends StatefulWidget {
   TextInputType keyboard;
   TextEditingController controller;
   bool isObscure;
-   CustomField({
-     this.maxLines=1,
-     this.field=true,
-     this.borderColor= ColorManger.lightPrimary,
-     required this.validator,
-     this.isObscure=false,
-     required this.hint,
-     this.prefix,
-     required this.controller,required this.keyboard});
+
+  CustomField(
+      {this.maxLines = 1,
+      this.field = true,
+      this.borderColor = ColorManger.lightPrimary,
+      required this.validator,
+      this.isObscure = false,
+      required this.hint,
+      this.prefix,
+      required this.controller,
+      required this.keyboard});
 
   @override
   State<CustomField> createState() => _CustomFieldState();
 }
 
 class _CustomFieldState extends State<CustomField> {
-  bool PasswordToggle=true;
+  bool PasswordToggle = true;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -35,70 +38,73 @@ class _CustomFieldState extends State<CustomField> {
       validator: widget.validator,
       controller: widget.controller,
       keyboardType: widget.keyboard,
-      obscureText: widget.isObscure?PasswordToggle:false,
+      obscureText: widget.isObscure ? PasswordToggle : false,
       obscuringCharacter: "*",
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
-                :widget.borderColor
-          )
-        ),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(
+                color: widget.field
+                    ? Theme.of(context).colorScheme.onSecondaryContainer
+                    : widget.borderColor)),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-                color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
-                    :widget.borderColor
-            )
-        ),
+                color: widget.field
+                    ? Theme.of(context).colorScheme.onSecondaryContainer
+                    : widget.borderColor)),
         focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-                color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
-                    :widget.borderColor
-            )
-        ),
+                color: widget.field
+                    ? Theme.of(context).colorScheme.onSecondaryContainer
+                    : widget.borderColor)),
         errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-                color: widget.field?Theme.of(context).colorScheme.onSecondaryContainer
-                    :widget.borderColor
-            )
-        ),
+                color: widget.field
+                    ? Theme.of(context).colorScheme.onSecondaryContainer
+                    : widget.borderColor)),
         hintText: widget.hint,
-        suffixIcon: widget.isObscure?IconButton(
-            onPressed: (){
-              PasswordToggle=!PasswordToggle;
-              setState(() {
-
-              });
-            },
-            icon: Icon(PasswordToggle
-              ?Icons.visibility_off_rounded:Icons.visibility_rounded,
-              size:24 ,
-              color: Theme.of(context).colorScheme.onTertiaryContainer,)):null,
-        hintStyle:widget.field
-            ?Theme.of(context).textTheme.bodySmall
-            :Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: widget.borderColor
-        ),
+        suffixIcon: widget.isObscure
+            ? IconButton(
+                onPressed: () {
+                  PasswordToggle = !PasswordToggle;
+                  setState(() {});
+                },
+                icon: Icon(
+                  PasswordToggle
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  size: 24,
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                ))
+            : null,
+        hintStyle: widget.field
+            ? Theme.of(context).textTheme.bodySmall
+            : Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(color: widget.borderColor),
         prefixIconConstraints: BoxConstraints(
           maxHeight: 24,
           maxWidth: 60,
         ),
         prefixIcon: widget.prefix == null
-            ?null
-            :Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 16),
-          child: SvgPicture.asset(widget.prefix!,
-          width: 24,
-          height: 24,
-          colorFilter: ColorFilter.mode(widget.field
-              ?Theme.of(context).colorScheme.onTertiaryContainer
-              :widget.borderColor,
-              BlendMode.srcIn),),
-        ),
+            ? null
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: SvgPicture.asset(
+                  widget.prefix!,
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(
+                      widget.field
+                          ? Theme.of(context).colorScheme.onTertiaryContainer
+                          : widget.borderColor,
+                      BlendMode.srcIn),
+                ),
+              ),
       ),
     );
   }

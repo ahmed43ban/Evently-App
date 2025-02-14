@@ -14,24 +14,26 @@ class ThemeToggle extends StatefulWidget {
 }
 
 class _ThemeToggleState extends State<ThemeToggle> {
-  int currentValue=0;
+  int currentValue = 0;
+
   @override
   void initState() {
     super.initState();
     currentValue = PrefHelper.getTheme() ? 1 : 0;
   }
+
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
-    return  AnimatedToggleSwitch<int>.rolling(
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    return AnimatedToggleSwitch<int>.rolling(
       current: currentValue,
       values: [0, 1],
-      onChanged: (newValue){
+      onChanged: (newValue) {
         setState(() {
-          currentValue=newValue;
-          if(currentValue==0){
+          currentValue = newValue;
+          if (currentValue == 0) {
             themeProvider.changeTheme(ThemeMode.light);
-          }else{
+          } else {
             themeProvider.changeTheme(ThemeMode.dark);
           }
         });
@@ -40,23 +42,26 @@ class _ThemeToggleState extends State<ThemeToggle> {
       style: ToggleStyle(
         borderColor: Theme.of(context).colorScheme.primary,
         indicatorColor: Theme.of(context).colorScheme.primary,
-
       ),
       iconList: [
-        SvgPicture.asset(AssetsManger.sunIcon,
+        SvgPicture.asset(
+          AssetsManger.sunIcon,
           height: 30,
           width: 30,
           colorFilter: ColorFilter.mode(
-              currentValue==0?Theme.of(context).colorScheme.onPrimary
-                  :Theme.of(context).colorScheme.primary,
+              currentValue == 0
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.primary,
               BlendMode.srcIn),
         ),
-        SvgPicture.asset(AssetsManger.moonIcon,
+        SvgPicture.asset(
+          AssetsManger.moonIcon,
           height: 30,
           width: 30,
           colorFilter: ColorFilter.mode(
-              currentValue==1?Theme.of(context).colorScheme.onPrimary
-                  :Theme.of(context).colorScheme.primary,
+              currentValue == 1
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.primary,
               BlendMode.srcIn),
         ),
       ],

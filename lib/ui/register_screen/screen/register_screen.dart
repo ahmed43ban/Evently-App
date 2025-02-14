@@ -3,10 +3,12 @@ import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
+import 'package:evently/core/fireStoreHandler.dart';
 import 'package:evently/core/firebase_codes.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/model/User.dart' as MyUser;
 import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:evently/ui/login_screen/screen/login_screen.dart';
 import 'package:evently/ui/start_screen/widget/language_toggle.dart';
@@ -15,7 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class RegisterScreen extends StatefulWidget {
-  static const String routName="register";
+  static const String routName = "register";
+
   const RegisterScreen({super.key});
 
   @override
@@ -27,16 +30,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController rePasswordController;
-  GlobalKey<FormState>formKey=GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    nameController=TextEditingController();
-    emailController=TextEditingController();
-    passwordController=TextEditingController();
-    rePasswordController=TextEditingController();
+    nameController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    rePasswordController = TextEditingController();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -46,6 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     passwordController.dispose();
     rePasswordController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -63,77 +69,93 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Image.asset(AssetsManger.logo2),
                   Gap(16),
                   CustomField(
-                    validator: (value){
-                      if(value==null ||value.isEmpty){
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
                         return StringsManger.not_empty.tr();
                       }
                       return null;
                     },
-                    hint: StringsManger.name.tr(),prefix: AssetsManger.personIcon,
-                  controller: nameController,keyboard: TextInputType.name,),
+                    hint: StringsManger.name.tr(),
+                    prefix: AssetsManger.personIcon,
+                    controller: nameController,
+                    keyboard: TextInputType.name,
+                  ),
                   Gap(8),
                   CustomField(
-                      validator: (value){
-                        if(value==null ||value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           return StringsManger.not_empty.tr();
                         }
-                        if(!RegExp(emailRegex).hasMatch(value)){
+                        if (!RegExp(emailRegex).hasMatch(value)) {
                           return StringsManger.email_not_valid.tr();
                         }
                         return null;
                       },
-                      hint: StringsManger.email.tr(), prefix: AssetsManger.emailIcon,
-                      controller: emailController,keyboard: TextInputType.emailAddress),
+                      hint: StringsManger.email.tr(),
+                      prefix: AssetsManger.emailIcon,
+                      controller: emailController,
+                      keyboard: TextInputType.emailAddress),
                   Gap(8),
                   CustomField(
-                      validator: (value){
-                        if(value==null ||value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           return StringsManger.not_empty.tr();
                         }
-                        if(value.length<8){
+                        if (value.length < 8) {
                           return StringsManger.atlleast_eight.tr();
                         }
                         return null;
                       },
-                      isObscure:true,
+                      isObscure: true,
                       hint: StringsManger.password.tr(),
                       prefix: AssetsManger.passwordIcon,
                       controller: passwordController,
                       keyboard: TextInputType.visiblePassword),
                   Gap(8),
                   CustomField(
-                      validator: (value){
-                        if(value !=passwordController.text){
+                      validator: (value) {
+                        if (value != passwordController.text) {
                           return StringsManger.dont_match.tr();
                         }
                         return null;
                       },
-                      isObscure:true,
+                      isObscure: true,
                       hint: StringsManger.re_password.tr(),
                       prefix: AssetsManger.passwordIcon,
-                      controller: rePasswordController, keyboard: TextInputType.visiblePassword),
+                      controller: rePasswordController,
+                      keyboard: TextInputType.visiblePassword),
                   Gap(16),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     width: double.infinity,
-                    child: CustomButton(title: StringsManger.create_account.tr(), onPressed: (){
-                      createAccount();
-                    }),
+                    child: CustomButton(
+                        title: StringsManger.create_account.tr(),
+                        onPressed: () {
+                          createAccount();
+                        }),
                   ),
                   Gap(16),
-                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(StringsManger.already_have_account_ask.tr(),
-                      style: Theme.of(context).textTheme.titleSmall,),
-                      TextButton(onPressed: (){
-                        Navigator.pushReplacementNamed(context, LoginScreen.routName);
-                      },
-                          child:Text(StringsManger.login.tr(),
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: ColorManger.lightPrimary,
-                                decoration: TextDecoration.underline,
-                                decorationColor: ColorManger.lightPrimary
-                              )) )
+                      Text(
+                        StringsManger.already_have_account_ask.tr(),
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, LoginScreen.routName);
+                          },
+                          child: Text(StringsManger.login.tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
+                                      color: ColorManger.lightPrimary,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor:
+                                          ColorManger.lightPrimary)))
                     ],
                   ),
                   LanguageToggle()
@@ -145,31 +167,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-  createAccount()async{
-    if(formKey.currentState!.validate()){
+
+  createAccount() async {
+    if (formKey.currentState!.validate()) {
       try {
         DialogUtils.showLoadingDialog(context);
-        var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        var credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
+        FireStoreHandler.AddUser(MyUser.User(
+          id: credential.user!.uid,
+          email: emailController.text,
+          name: nameController.text
+        ));
         Navigator.pop(context);
-        Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route)=>false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeScreen.routeName, (route) => false);
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
         if (e.code == FirebaseAuthCodes.weakPass) {
-          DialogUtils.showMessageDialog(context: context,
+          DialogUtils.showMessageDialog(
+              context: context,
               message: StringsManger.pass_weak.tr(),
               buttonTitle: StringsManger.ok.tr(),
-              positiveBtnClick: (){
-            Navigator.pop(context);
+              positiveBtnClick: () {
+                Navigator.pop(context);
               });
-
         } else if (e.code == FirebaseAuthCodes.emailAlreadyInUse) {
-          DialogUtils.showMessageDialog(context: context,
+          DialogUtils.showMessageDialog(
+              context: context,
               message: StringsManger.account_already_exists.tr(),
               buttonTitle: StringsManger.ok.tr(),
-              positiveBtnClick: (){
+              positiveBtnClick: () {
                 Navigator.pop(context);
               });
         }

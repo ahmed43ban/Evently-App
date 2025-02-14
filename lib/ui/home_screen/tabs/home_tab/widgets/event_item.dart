@@ -10,14 +10,13 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height= MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     return Container(
-      height:height*0.25 ,
+      height: height * 0.25,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        image: DecorationImage(
-            image: AssetImage(AssetsManger.birthday),fit: BoxFit.cover)
-      ),
+          borderRadius: BorderRadius.circular(8),
+          image: DecorationImage(
+              image: AssetImage(AssetsManger.birthday), fit: BoxFit.cover)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -27,13 +26,18 @@ class EventItem extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(8)
-              ),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  borderRadius: BorderRadius.circular(8)),
               child: Column(
                 children: [
-                  Text(StringsManger.const_day.tr(),style: Theme.of(context).textTheme.titleMedium,),
-                  Text(StringsManger.const_month.tr(),style: Theme.of(context).textTheme.titleMedium,)
+                  Text(
+                    StringsManger.const_day.tr(),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Text(
+                    StringsManger.const_month.tr(),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  )
                 ],
               ),
             ),
@@ -42,14 +46,20 @@ class EventItem extends StatelessWidget {
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.outline
-              ),
+                  color: Theme.of(context).colorScheme.outline),
               child: Row(
                 children: [
-                  Expanded(child: Text(StringsManger.title_birthday.tr(),style: Theme.of(context).textTheme.displaySmall,)),
-                  SvgPicture.asset(AssetsManger.loveSelected,height: 24,width: 24,
-                    colorFilter:ColorFilter.mode(ColorManger.lightPrimary,
-                        BlendMode.srcIn) ,
+                  Expanded(
+                      child: Text(
+                    StringsManger.title_birthday.tr(),
+                    style: Theme.of(context).textTheme.displaySmall,
+                  )),
+                  SvgPicture.asset(
+                    AssetsManger.loveSelected,
+                    height: 24,
+                    width: 24,
+                    colorFilter: ColorFilter.mode(
+                        ColorManger.lightPrimary, BlendMode.srcIn),
                   )
                 ],
               ),

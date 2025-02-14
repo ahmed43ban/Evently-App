@@ -9,9 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-
 class CreateEventScreen extends StatefulWidget {
-  static const String routeName="createEvent";
+  static const String routeName = "createEvent";
 
   @override
   State<CreateEventScreen> createState() => _CreateEventScreenState();
@@ -20,15 +19,17 @@ class CreateEventScreen extends StatefulWidget {
 class _CreateEventScreenState extends State<CreateEventScreen> {
   late TextEditingController titleController;
   late TextEditingController descController;
-  int selectedIndex=0;
+  int selectedIndex = 0;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    titleController=TextEditingController();
-    descController=TextEditingController();
+    titleController = TextEditingController();
+    descController = TextEditingController();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -36,17 +37,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     titleController.dispose();
     descController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    double height=MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color:ColorManger.lightPrimary
+        iconTheme: IconThemeData(color: ColorManger.lightPrimary),
+        title: Text(
+          StringsManger.create_event.tr(),
+          style: TextStyle(color: ColorManger.lightPrimary),
         ),
-        title: Text(StringsManger.create_event.tr(),style: TextStyle(
-          color: ColorManger.lightPrimary
-        ),),
       ),
       body: Form(
         key: formKey,
@@ -59,28 +60,38 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: height*0.2,
+                    height: height * 0.2,
                     child: TabBarView(
-                      physics: NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(AssetsManger.book_club,height: height*0.2,fit: BoxFit.cover,)),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(AssetsManger.sportcard,height: height*0.2,fit: BoxFit.cover,)),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(AssetsManger.birthday,height: height*0.2,fit: BoxFit.cover,)),
-                    ]),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                AssetsManger.book_club,
+                                height: height * 0.2,
+                                fit: BoxFit.cover,
+                              )),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                AssetsManger.sportcard,
+                                height: height * 0.2,
+                                fit: BoxFit.cover,
+                              )),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                AssetsManger.birthday,
+                                height: height * 0.2,
+                                fit: BoxFit.cover,
+                              )),
+                        ]),
                   ),
                   Gap(16),
                   TabBar(
-                      onTap: (index){
-                        selectedIndex=index;
-                        setState(() {
-              
-                        });
+                      onTap: (index) {
+                        selectedIndex = index;
+                        setState(() {});
                       },
                       labelColor: Colors.white,
                       unselectedLabelColor: ColorManger.lightPrimary,
@@ -92,84 +103,102 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       isScrollable: true,
                       dividerHeight: 0,
                       tabs: [
-                        Tab(child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: ColorManger.lightPrimary
-                              ),
-                              borderRadius: BorderRadius.circular(46)
+                        Tab(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: ColorManger.lightPrimary),
+                                borderRadius: BorderRadius.circular(46)),
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AssetsManger.book_event,
+                                  colorFilter: ColorFilter.mode(
+                                      selectedIndex == 0
+                                          ? Colors.white
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryFixedVariant,
+                                      BlendMode.srcIn),
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                Gap(8),
+                                Text(StringsManger.book_club.tr())
+                              ],
+                            ),
                           ),
-                          padding: EdgeInsets.all( 10),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AssetsManger.book_event,colorFilter: ColorFilter.mode(
-                                  selectedIndex==0
-                                      ?Colors.white
-                                      :Theme.of(context).colorScheme.onPrimaryFixedVariant,
-                                  BlendMode.srcIn),
-                                height: 24,width: 24,),
-                              Gap(8),
-                              Text(StringsManger.book_club.tr())
-                            ],
+                        ),
+                        Tab(
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: ColorManger.lightPrimary),
+                                borderRadius: BorderRadius.circular(46)),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AssetsManger.sport_event,
+                                  colorFilter: ColorFilter.mode(
+                                      selectedIndex == 1
+                                          ? Colors.white
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryFixedVariant,
+                                      BlendMode.srcIn),
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                Gap(8),
+                                Text(StringsManger.sport.tr())
+                              ],
+                            ),
                           ),
-                        ),),
-                        Tab(child: Container(
-                          padding:  EdgeInsets.all( 10),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: ColorManger.lightPrimary
-                              ),
-                              borderRadius: BorderRadius.circular(46)
+                        ),
+                        Tab(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: ColorManger.lightPrimary),
+                                borderRadius: BorderRadius.circular(46)),
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AssetsManger.cake_event,
+                                  colorFilter: ColorFilter.mode(
+                                      selectedIndex == 2
+                                          ? Colors.white
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryFixedVariant,
+                                      BlendMode.srcIn),
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                Gap(8),
+                                Text(StringsManger.birthday.tr())
+                              ],
+                            ),
                           ),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AssetsManger.sport_event,colorFilter: ColorFilter.mode(
-                                  selectedIndex==1
-                                      ?Colors.white
-                                      :Theme.of(context).colorScheme.onPrimaryFixedVariant,
-                                  BlendMode.srcIn),
-                                height: 24,width: 24,),
-                              Gap(8),
-                              Text(StringsManger.sport.tr())
-                            ],
-                          ),
-                        ),),
-                        Tab(child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color:ColorManger.lightPrimary
-                              ),
-                              borderRadius: BorderRadius.circular(46)
-                          ),
-                          padding: EdgeInsets.all( 10),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AssetsManger.cake_event,colorFilter: ColorFilter.mode(
-                                  selectedIndex==2
-                                      ?Colors.white
-                                      :Theme.of(context).colorScheme.onPrimaryFixedVariant,
-                                  BlendMode.srcIn),
-                                height: 24,width: 24,),
-                              Gap(8),
-                              Text(StringsManger.birthday.tr())
-                            ],
-                          ),
-                        ),),
-              
-              
-              
+                        ),
                       ]),
                   Gap(16),
-                  Text(StringsManger.title.tr(),style: Theme.of(context).textTheme.titleSmall,),
+                  Text(
+                    StringsManger.title.tr(),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                   Gap(8),
                   CustomField(
-                      validator: (value){
-                        if(value==null || value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           DialogUtils.showMessageDialog(
                               context: context,
                               message: StringsManger.not_empty.tr(),
                               buttonTitle: StringsManger.ok.tr(),
-                              positiveBtnClick: (){
+                              positiveBtnClick: () {
                                 Navigator.pop(context);
                               });
                         }
@@ -180,15 +209,19 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       controller: titleController,
                       keyboard: TextInputType.text),
                   Gap(8),
-                  Text(StringsManger.desc.tr(),style: Theme.of(context).textTheme.titleSmall,),
-                  CustomField(maxLines: 3,
-                      validator: (value){
-                        if(value==null || value.isEmpty){
+                  Text(
+                    StringsManger.desc.tr(),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  CustomField(
+                      maxLines: 3,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           DialogUtils.showMessageDialog(
                               context: context,
                               message: StringsManger.not_empty.tr(),
                               buttonTitle: StringsManger.ok.tr(),
-                              positiveBtnClick: (){
+                              positiveBtnClick: () {
                                 Navigator.pop(context);
                               });
                         }
@@ -200,9 +233,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   Gap(16),
                   Row(
                     children: [
-                      SvgPicture.asset(AssetsManger.date_mark,colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.secondary,
-                          BlendMode.srcIn),),
+                      SvgPicture.asset(
+                        AssetsManger.date_mark,
+                        colorFilter: ColorFilter.mode(
+                            Theme.of(context).colorScheme.secondary,
+                            BlendMode.srcIn),
+                      ),
                       Gap(8),
                       Expanded(
                         child: Text(
@@ -213,22 +249,28 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       Align(
                         alignment: AlignmentDirectional.centerEnd,
                         child: TextButton(
-                            onPressed: () {},
-                            child: Text(StringsManger.choose_date.tr(),
+                            onPressed: () {
+                              chooseEventDate();
+                            },
+                            child: Text(
+                                selectedDate != null
+                                    ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                                    : StringsManger.choose_date.tr(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
                                     ?.copyWith(
-                                    color: ColorManger.lightPrimary,
+                                      color: ColorManger.lightPrimary,
                                     ))),
                       )
                     ],
                   ),
                   Row(
                     children: [
-                      SvgPicture.asset(AssetsManger.time_mark,colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.secondary,
-                          BlendMode.srcIn)),
+                      SvgPicture.asset(AssetsManger.time_mark,
+                          colorFilter: ColorFilter.mode(
+                              Theme.of(context).colorScheme.secondary,
+                              BlendMode.srcIn)),
                       Gap(8),
                       Expanded(
                         child: Text(
@@ -239,52 +281,61 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       Align(
                         alignment: AlignmentDirectional.centerEnd,
                         child: TextButton(
-                            onPressed: () {},
-                            child: Text(StringsManger.choose_time.tr(),
+                            onPressed: () {
+                              chooseEventTime();
+                            },
+                            child: Text(
+                                selectedTime == null
+                                    ? StringsManger.choose_time.tr()
+                                    : "${selectedTime!.hourOfPeriod}:${selectedTime!.minute}${selectedTime!.period.name}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
                                     ?.copyWith(
-                                    color: ColorManger.lightPrimary,
+                                      color: ColorManger.lightPrimary,
                                     ))),
                       )
                     ],
                   ),
-                  Text(StringsManger.location.tr(),style: Theme.of(context).textTheme.titleSmall,),
+                  Text(
+                    StringsManger.location.tr(),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                   Gap(8),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: ColorManger.lightPrimary
-                      )
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(AssetsManger.chooseLocation),
-                        Gap(8),
-                        Expanded(
-                          child: Text(StringsManger.choose_location.tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: ColorManger.lightPrimary)),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AssetsManger.chooseLocation),
+                          Gap(8),
+                          Expanded(
+                            child: Text(StringsManger.choose_location.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      color: ColorManger.lightPrimary,
+                                    )),
+                          ),
+                          Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Icon(
+                                Icons.arrow_forward_ios_sharp,
                                 color: ColorManger.lightPrimary,
-                              )),
-                        ),
-                        Align(
-                          alignment: AlignmentDirectional.centerEnd,
-                            child: Icon(Icons.arrow_forward_ios_sharp,color: ColorManger.lightPrimary,))
-                      ],
+                              ))
+                        ],
+                      ),
                     ),
                   ),
                   Gap(8),
                   Container(
                     width: double.infinity,
                     child: CustomButton(
-                        title: StringsManger.add_event.tr(),
-                        onPressed: (){}),
+                        title: StringsManger.add_event.tr(), onPressed: () {}),
                   ),
                 ],
               ),
@@ -293,5 +344,31 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         ),
       ),
     );
+  }
+
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+
+  chooseEventDate() async {
+    DateTime? tempDate = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 365)));
+    if (tempDate != null) {
+      selectedDate = tempDate;
+      setState(() {});
+    }
+  }
+
+  chooseEventTime() async {
+    TimeOfDay? tempDate = await showTimePicker(
+      context: context,
+      initialTime: selectedTime != null ? selectedTime! : TimeOfDay.now(),
+    );
+    if (tempDate != null) {
+      selectedTime = tempDate;
+      setState(() {});
+    }
   }
 }
