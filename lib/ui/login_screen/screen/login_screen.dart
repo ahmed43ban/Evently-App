@@ -123,7 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, RegisterScreen.routName);
+                            Navigator.pushNamed(
+                                context, RegisterScreen.routName);
                           },
                           child: Text(StringsManger.create_account.tr(),
                               style: Theme.of(context)
@@ -132,7 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ?.copyWith(
                                       color: ColorManger.lightPrimary,
                                       decoration: TextDecoration.underline,
-                                      decorationColor: ColorManger.lightPrimary)))
+                                      decorationColor:
+                                          ColorManger.lightPrimary)))
                     ],
                   ),
                   Gap(8),

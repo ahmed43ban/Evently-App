@@ -10,32 +10,43 @@ class LanguageSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 200,
       color: Colors.grey,
-      padding:  EdgeInsets.all(16),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(context.locale.languageCode == "ar"
-                  ? StringsManger.language2
-                  : StringsManger.language1,
-                style: Theme.of(context).textTheme.titleMedium,),
-              Icon(Icons.check,size: 30,color: ColorManger.lightPrimary,)
+              Text(
+                context.locale.languageCode == "ar"
+                    ? StringsManger.language2
+                    : StringsManger.language1,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Icon(
+                Icons.check,
+                size: 30,
+                color: ColorManger.lightPrimary,
+              )
             ],
           ),
           Gap(24),
           InkWell(
-            onTap: (){
-              if(context.locale.languageCode=="ar"){
+            onTap: () {
+              if (context.locale.languageCode == "ar") {
                 context.setLocale(Locale("en"));
-              }else{
+              } else {
                 context.setLocale(Locale("ar"));
               }
             },
-            child: Text(context.locale.languageCode != "ar"
-                ? StringsManger.language2
-                : StringsManger.language1,
-              style: Theme.of(context).textTheme.displaySmall,),
+            child: Text(
+              context.locale.languageCode != "ar"
+                  ? StringsManger.language2
+                  : StringsManger.language1,
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
           )
         ],
       ),

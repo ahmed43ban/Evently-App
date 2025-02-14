@@ -13,6 +13,7 @@ class ThemeSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
     return Container(
+      height: 200,
       color: Colors.grey,
       padding:  EdgeInsets.all(16),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start,

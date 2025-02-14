@@ -5,11 +5,11 @@ import 'package:evently/firebase_options.dart';
 import 'package:evently/providers/theme_provider.dart';
 import 'package:evently/ui/create_event/screen/creat_event_screen.dart';
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
+import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:evently/ui/login_screen/screen/login_screen.dart';
 import 'package:evently/ui/onboarding/screen/onBoarding_screen.dart';
 import 'package:evently/ui/register_screen/screen/register_screen.dart';
 import 'package:evently/ui/start_screen/screen/start_screen.dart';
-import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -54,11 +54,12 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routName: (_) => RegisterScreen(),
         LoginScreen.routName: (_) => LoginScreen(),
         ForgetPasswordScreen.routName: (_) => ForgetPasswordScreen(),
-        HomeScreen.routeName:(_)=>HomeScreen(),
-        CreateEventScreen.routeName:(_)=>CreateEventScreen(),
+        HomeScreen.routeName: (_) => HomeScreen(),
+        CreateEventScreen.routeName: (_) => CreateEventScreen(),
       },
-      initialRoute: FirebaseAuth.instance.currentUser==null
-          ?LoginScreen.routName:HomeScreen.routeName,
+      initialRoute: FirebaseAuth.instance.currentUser == null
+          ? LoginScreen.routName
+          : HomeScreen.routeName,
     );
   }
 }
