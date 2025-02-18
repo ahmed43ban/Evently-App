@@ -67,4 +67,5 @@ abstract class StringsManger {
   static const String title_birthday="title_birthday";
   static const String const_day="const_day";
   static const String const_month="const_month";
+  static const String tap_to_select="tap_to_select";
 }

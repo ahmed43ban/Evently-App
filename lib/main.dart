@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/app_style.dart';
 import 'package:evently/core/prefshelper.dart';
 import 'package:evently/firebase_options.dart';
+import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
 import 'package:evently/ui/create_event/screen/creat_event_screen.dart';
+import 'package:evently/ui/event_location/screen/event_location_screen.dart';
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
 import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:evently/ui/login_screen/screen/login_screen.dart';
@@ -54,12 +56,20 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routName: (_) => RegisterScreen(),
         LoginScreen.routName: (_) => LoginScreen(),
         ForgetPasswordScreen.routName: (_) => ForgetPasswordScreen(),
-        HomeScreen.routeName: (_) => HomeScreen(),
-        CreateEventScreen.routeName: (_) => CreateEventScreen(),
+        HomeScreen.routeName: (_) => ChangeNotifierProvider(
+            create: (context) => LocationProvider()..getPermission(),
+            child: HomeScreen()),
+        EventLocationScreen.routeName:(_)=> ChangeNotifierProvider(
+            create: (context) => LocationProvider(),
+            child:EventLocationScreen()),
+        CreateEventScreen.routeName: (_) => ChangeNotifierProvider(
+            create: (context) => LocationProvider(),
+            child:CreateEventScreen()),
       },
-      initialRoute: FirebaseAuth.instance.currentUser == null
+      initialRoute: PrefHelper.getOnboarding()?FirebaseAuth.instance.currentUser == null
           ? LoginScreen.routName
-          : HomeScreen.routeName,
+          : HomeScreen.routeName
+          :StartScreen.routName,
     );
   }
 }

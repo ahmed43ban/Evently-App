@@ -5,9 +5,13 @@ import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/providers/location_provider.dart';
+import 'package:evently/ui/event_location/screen/event_location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const String routeName = "createEvent";
@@ -40,6 +44,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    LocationProvider locationProvider=Provider.of<LocationProvider>(context);
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -303,6 +308,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   Gap(8),
                   InkWell(
+                    onTap: (){
+                      Navigator.pushNamed(context, EventLocationScreen.routeName);
+                    },
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -313,7 +321,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           SvgPicture.asset(AssetsManger.chooseLocation),
                           Gap(8),
                           Expanded(
-                            child: Text(StringsManger.choose_location.tr(),
+                            child: Text(locationProvider.eventLocation==null
+                                ?StringsManger.choose_location.tr()
+                                    :"Location${locationProvider.eventLocation!.latitude}:${locationProvider.eventLocation!.longitude}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall

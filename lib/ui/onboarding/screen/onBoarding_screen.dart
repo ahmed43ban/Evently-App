@@ -1,4 +1,5 @@
 import 'package:evently/core/assets-manger.dart';
+import 'package:evently/core/prefshelper.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/theme_provider.dart';
 import 'package:evently/ui/login_screen/screen/login_screen.dart';
@@ -103,6 +104,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 duration: Duration(milliseconds: 100),
                                 curve: Curves.decelerate);
                           } else {
+                            PrefHelper.setOnboarding(true);
                             Navigator.pushReplacementNamed(
                                 context, LoginScreen.routName);
                           }
