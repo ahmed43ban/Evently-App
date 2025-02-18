@@ -15,7 +15,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -30,13 +29,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   late TextEditingController descController;
   int selectedIndex = 0;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  late LocationProvider locationProvider;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     titleController = TextEditingController();
     descController = TextEditingController();
+    locationProvider=Provider.of<LocationProvider>(context,listen: false);
   }
 
   @override
@@ -45,11 +45,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     super.dispose();
     titleController.dispose();
     descController.dispose();
+    locationProvider.eventLocation=null;
   }
 
   @override
   Widget build(BuildContext context) {
-    LocationProvider locationProvider=Provider.of<LocationProvider>(context);
+    locationProvider=Provider.of<LocationProvider>(context);
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -316,7 +317,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           Expanded(
                             child: Text(locationProvider.eventLocation==null
                                 ?StringsManger.choose_location.tr()
-                                    :"Location${locationProvider.eventLocation!.latitude}:${locationProvider.eventLocation!.longitude}",
+                                    :"Location is ${locationProvider.eventLocation!.latitude}:${locationProvider.eventLocation!.longitude}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
@@ -380,23 +381,29 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   addNewEvent()async{
     if(formKey.currentState!.validate()){
       if(selectedDate!=null&&selectedTime!=null){
-        DateTime eventDate=DateTime(
-            selectedDate!.year,
-            selectedDate!.month,
-            selectedDate!.day,
-            selectedTime!.hour,
-            selectedTime!.minute);
-        DialogUtils.showLoadingDialog(context);
-        await FireStoreHandler.createEvent(Event(
-            title: titleController.text,
-            description: descController.text,
-            date: Timestamp.fromDate(eventDate),
-            isWishList: false,
-            userId: FirebaseAuth.instance.currentUser!.uid,
-            category: getSelectedCategory()
-        ));
-        Navigator.pop(context);
-        DialogUtils.showToast("Event Added success");
+        if(locationProvider.eventLocation!=null){
+          DateTime eventDate=DateTime(
+              selectedDate!.year,
+              selectedDate!.month,
+              selectedDate!.day,
+              selectedTime!.hour,
+              selectedTime!.minute);
+          DialogUtils.showLoadingDialog(context);
+          await FireStoreHandler.createEvent(Event(
+              title: titleController.text,
+              description: descController.text,
+              date: Timestamp.fromDate(eventDate),
+              isWishList: false,
+              userId: FirebaseAuth.instance.currentUser!.uid,
+              category: getSelectedCategory(),
+              lat: locationProvider.eventLocation!.latitude,
+              lng: locationProvider.eventLocation!.longitude
+          ));
+          Navigator.pop(context);
+          DialogUtils.showToast("Event Added success");
+        }else{
+          DialogUtils.showToast("Location Should Entered");
+        }
       }else{
         DialogUtils.showToast("Please Enter Date and Time");
       }

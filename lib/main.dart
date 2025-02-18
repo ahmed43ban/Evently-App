@@ -30,8 +30,11 @@ void main() async {
       path: 'assets/translations',
       // <-- change the path of the translation files
       fallbackLocale: Locale('en'),
-      child: ChangeNotifierProvider(
-          create: (context) => ThemeProvider()..initTheme(),
+      child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => ThemeProvider()..initTheme(),),
+            ChangeNotifierProvider(create: (context) => LocationProvider(),),
+          ],
           child: const MyApp())));
 }
 
@@ -59,16 +62,10 @@ class MyApp extends StatelessWidget {
         ForgetPasswordScreen.routName: (_) => ForgetPasswordScreen(),
         HomeScreen.routeName: (_) => ChangeNotifierProvider(
           create: (context) => UserProvider()..getUser(),
-          child: ChangeNotifierProvider(
-              create: (context) => LocationProvider()..getPermission(),
-              child: HomeScreen()),
+          child: HomeScreen(),
         ),
-        EventLocationScreen.routeName:(_)=> ChangeNotifierProvider(
-            create: (context) => LocationProvider(),
-            child:EventLocationScreen()),
-        CreateEventScreen.routeName: (_) => ChangeNotifierProvider(
-            create: (context) => LocationProvider(),
-            child:CreateEventScreen()),
+        EventLocationScreen.routeName:(_)=> EventLocationScreen(),
+        CreateEventScreen.routeName: (_) => CreateEventScreen(),
       },
       initialRoute: PrefHelper.getOnboarding()?FirebaseAuth.instance.currentUser == null
           ? LoginScreen.routName
