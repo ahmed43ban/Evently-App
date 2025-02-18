@@ -4,7 +4,6 @@ import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
 import 'package:evently/core/fireStoreHandler.dart';
-import 'package:evently/core/strings-manger.dart';
 import 'package:evently/model/Event.dart';
 import 'package:evently/providers/theme_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class EventItem extends StatefulWidget {
   Event event;
-  EventItem({required this.event,super.key});
+
+  EventItem({required this.event, super.key});
 
   @override
   State<EventItem> createState() => _EventItemState();
@@ -25,8 +25,9 @@ class _EventItemState extends State<EventItem> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    themeProvider=Provider.of<ThemeProvider>(context,listen: false);
+    themeProvider = Provider.of<ThemeProvider>(context, listen: false);
   }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -54,7 +55,8 @@ class _EventItemState extends State<EventItem> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    DateFormat.MMM(context.locale.languageCode).format(widget.event.date!.toDate()),
+                    DateFormat.MMM(context.locale.languageCode)
+                        .format(widget.event.date!.toDate()),
                     style: Theme.of(context).textTheme.titleMedium,
                   )
                 ],
@@ -74,29 +76,29 @@ class _EventItemState extends State<EventItem> {
                     style: Theme.of(context).textTheme.displaySmall,
                   )),
                   InkWell(
-                    onTap: ()async{
-                      if(widget.event.isWishList??false){
+                    onTap: () async {
+                      if (widget.event.isWishList ?? false) {
                         DialogUtils.showLoadingDialog(context);
-                        await FireStoreHandler.removeFromFavorite(FirebaseAuth.instance.currentUser!.uid, widget.event.id!);
-                        widget.event.isWishList=false;
-                        setState(() {
-
-                        });
+                        await FireStoreHandler.removeFromFavorite(
+                            FirebaseAuth.instance.currentUser!.uid,
+                            widget.event.id!);
+                        widget.event.isWishList = false;
+                        setState(() {});
                         Navigator.pop(context);
-                      }else{
+                      } else {
                         DialogUtils.showLoadingDialog(context);
-                        await FireStoreHandler.addToFavorite(FirebaseAuth.instance.currentUser!.uid, widget.event);
-                        widget.event.isWishList=true;
-                        setState(() {
-
-                        });
+                        await FireStoreHandler.addToFavorite(
+                            FirebaseAuth.instance.currentUser!.uid,
+                            widget.event);
+                        widget.event.isWishList = true;
+                        setState(() {});
                         Navigator.pop(context);
                       }
                     },
                     child: SvgPicture.asset(
                       widget.event.isWishList!
-                          ?AssetsManger.loveSelected
-                          :AssetsManger.loveUnSelected,
+                          ? AssetsManger.loveSelected
+                          : AssetsManger.loveUnSelected,
                       height: 24,
                       width: 24,
                       colorFilter: ColorFilter.mode(
@@ -114,19 +116,19 @@ class _EventItemState extends State<EventItem> {
 
   late ThemeProvider themeProvider;
 
-  String getImageByCategory(){
-    if(widget.event.category==sportCategory){
-      if(themeProvider.currentTheme==ThemeMode.dark){
+  String getImageByCategory() {
+    if (widget.event.category == sportCategory) {
+      if (themeProvider.currentTheme == ThemeMode.dark) {
         return AssetsManger.sportcard;
       }
       return AssetsManger.sport_card_light;
-    }else if(widget.event.category==birthDayCategory){
-      if(themeProvider.currentTheme==ThemeMode.dark){
+    } else if (widget.event.category == birthDayCategory) {
+      if (themeProvider.currentTheme == ThemeMode.dark) {
         return AssetsManger.birtday_dark;
       }
       return AssetsManger.birtday_dark;
-    }else{
-      if(themeProvider.currentTheme==ThemeMode.dark){
+    } else {
+      if (themeProvider.currentTheme == ThemeMode.dark) {
         return AssetsManger.book_club;
       }
       return AssetsManger.book_club;

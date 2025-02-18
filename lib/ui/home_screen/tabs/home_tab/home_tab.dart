@@ -6,7 +6,6 @@ import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/widgets/all_events.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/widgets/birthDay_events.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/widgets/book_events.dart';
-import 'package:evently/ui/home_screen/tabs/home_tab/widgets/event_item.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/widgets/sport_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,11 +54,15 @@ class _HomeTabState extends State<HomeTab> {
                                     fontSize: 14, fontWeight: FontWeight.w400),
                           ),
                           userProvider.isLoading
-                              ?CircularProgressIndicator(color:Colors.white ,)
-                              :Text(
-                            userProvider.user?.name??"No Name",
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  userProvider.user?.name ?? "No Name",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
                         ],
                       ),
                     ),

@@ -11,35 +11,45 @@ class ThemeSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
       height: 200,
       color: Colors.grey,
-      padding:  EdgeInsets.all(16),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(themeProvider.currentTheme == ThemeMode.dark
-                  ? StringsManger.theme2.tr()
-                  : StringsManger.theme1.tr(),
-                style: Theme.of(context).textTheme.titleMedium,),
-              Icon(Icons.check,size: 30,color: ColorManger.lightPrimary,)
+              Text(
+                themeProvider.currentTheme == ThemeMode.dark
+                    ? StringsManger.theme2.tr()
+                    : StringsManger.theme1.tr(),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Icon(
+                Icons.check,
+                size: 30,
+                color: ColorManger.lightPrimary,
+              )
             ],
           ),
           Gap(24),
           InkWell(
-            onTap: (){
-              if(themeProvider.currentTheme==ThemeMode.dark){
+            onTap: () {
+              if (themeProvider.currentTheme == ThemeMode.dark) {
                 themeProvider.changeTheme(ThemeMode.light);
-              }else{
+              } else {
                 themeProvider.changeTheme(ThemeMode.dark);
               }
             },
-            child: Text(themeProvider.currentTheme != ThemeMode.dark
-                ? StringsManger.theme2.tr()
-                : StringsManger.theme1.tr(),
-              style: Theme.of(context).textTheme.displaySmall,),
+            child: Text(
+              themeProvider.currentTheme != ThemeMode.dark
+                  ? StringsManger.theme2.tr()
+                  : StringsManger.theme1.tr(),
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
           )
         ],
       ),

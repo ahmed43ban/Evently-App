@@ -30,12 +30,14 @@ void main() async {
       path: 'assets/translations',
       // <-- change the path of the translation files
       fallbackLocale: Locale('en'),
-      child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => ThemeProvider()..initTheme(),),
-            ChangeNotifierProvider(create: (context) => LocationProvider(),),
-          ],
-          child: const MyApp())));
+      child: MultiProvider(providers: [
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider()..initTheme(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(),
+        ),
+      ], child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {
@@ -61,16 +63,17 @@ class MyApp extends StatelessWidget {
         LoginScreen.routName: (_) => LoginScreen(),
         ForgetPasswordScreen.routName: (_) => ForgetPasswordScreen(),
         HomeScreen.routeName: (_) => ChangeNotifierProvider(
-          create: (context) => UserProvider()..getUser(),
-          child: HomeScreen(),
-        ),
-        EventLocationScreen.routeName:(_)=> EventLocationScreen(),
+              create: (context) => UserProvider()..getUser(),
+              child: HomeScreen(),
+            ),
+        EventLocationScreen.routeName: (_) => EventLocationScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
       },
-      initialRoute: PrefHelper.getOnboarding()?FirebaseAuth.instance.currentUser == null
-          ? LoginScreen.routName
-          : HomeScreen.routeName
-          :StartScreen.routName,
+      initialRoute: PrefHelper.getOnboarding()
+          ? FirebaseAuth.instance.currentUser == null
+              ? LoginScreen.routName
+              : HomeScreen.routeName
+          : StartScreen.routName,
     );
   }
 }

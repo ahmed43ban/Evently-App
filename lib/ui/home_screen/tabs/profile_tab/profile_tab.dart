@@ -54,7 +54,7 @@ class ProfileTab extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userProvider.user?.name??"No Name",
+                      userProvider.user?.name ?? "No Name",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Gap(8),
@@ -84,9 +84,11 @@ class ProfileTab extends StatelessWidget {
                 ),
                 Gap(16),
                 InkWell(
-                  onTap: (){
-                    showModalBottomSheet(context: context,
-                      builder: (context) => LanguageSheet(),);
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => LanguageSheet(),
+                    );
                   },
                   child: Container(
                     padding: EdgeInsets.all(16),
@@ -119,9 +121,11 @@ class ProfileTab extends StatelessWidget {
                 ),
                 Gap(16),
                 InkWell(
-                  onTap: (){
-                    showModalBottomSheet(context: context,
-                      builder: (context) => ThemeSheet(),);
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => ThemeSheet(),
+                    );
                   },
                   child: Container(
                     padding: EdgeInsets.all(16),
@@ -149,14 +153,14 @@ class ProfileTab extends StatelessWidget {
                 Spacer(),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(16),
+                        padding: EdgeInsets.all(16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)
-                        ),
+                            borderRadius: BorderRadius.circular(16)),
                         backgroundColor: Colors.redAccent),
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
-                      Navigator.pushReplacementNamed(context, LoginScreen.routName);
+                      Navigator.pushReplacementNamed(
+                          context, LoginScreen.routName);
                     },
                     child: Row(
                       children: [

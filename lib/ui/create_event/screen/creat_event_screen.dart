@@ -30,13 +30,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   int selectedIndex = 0;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late LocationProvider locationProvider;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     titleController = TextEditingController();
     descController = TextEditingController();
-    locationProvider=Provider.of<LocationProvider>(context,listen: false);
+    locationProvider = Provider.of<LocationProvider>(context, listen: false);
   }
 
   @override
@@ -45,12 +46,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     super.dispose();
     titleController.dispose();
     descController.dispose();
-    locationProvider.eventLocation=null;
+    locationProvider.eventLocation = null;
   }
 
   @override
   Widget build(BuildContext context) {
-    locationProvider=Provider.of<LocationProvider>(context);
+    locationProvider = Provider.of<LocationProvider>(context);
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -203,8 +204,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   Gap(8),
                   CustomField(
-                      validator: (value){
-                        if(value==null ||value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           return StringsManger.not_empty.tr();
                         }
                         return null;
@@ -220,8 +221,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   CustomField(
                       maxLines: 3,
-                      validator: (value){
-                        if(value==null ||value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           return StringsManger.not_empty.tr();
                         }
                         return null;
@@ -302,8 +303,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   Gap(8),
                   InkWell(
-                    onTap: (){
-                      Navigator.pushNamed(context, EventLocationScreen.routeName);
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, EventLocationScreen.routeName);
                     },
                     child: Container(
                       padding: EdgeInsets.all(8),
@@ -315,9 +317,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           SvgPicture.asset(AssetsManger.chooseLocation),
                           Gap(8),
                           Expanded(
-                            child: Text(locationProvider.eventLocation==null
-                                ?StringsManger.choose_location.tr()
-                                    :"Location is ${locationProvider.eventLocation!.latitude}:${locationProvider.eventLocation!.longitude}",
+                            child: Text(
+                                locationProvider.eventLocation == null
+                                    ? StringsManger.choose_location.tr()
+                                    : "Location is ${locationProvider.eventLocation!.latitude}:${locationProvider.eventLocation!.longitude}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
@@ -378,16 +381,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       setState(() {});
     }
   }
-  addNewEvent()async{
-    if(formKey.currentState!.validate()){
-      if(selectedDate!=null&&selectedTime!=null){
-        if(locationProvider.eventLocation!=null){
-          DateTime eventDate=DateTime(
-              selectedDate!.year,
-              selectedDate!.month,
-              selectedDate!.day,
-              selectedTime!.hour,
-              selectedTime!.minute);
+
+  addNewEvent() async {
+    if (formKey.currentState!.validate()) {
+      if (selectedDate != null && selectedTime != null) {
+        if (locationProvider.eventLocation != null) {
+          DateTime eventDate = DateTime(selectedDate!.year, selectedDate!.month,
+              selectedDate!.day, selectedTime!.hour, selectedTime!.minute);
           DialogUtils.showLoadingDialog(context);
           await FireStoreHandler.createEvent(Event(
               title: titleController.text,
@@ -397,24 +397,24 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               userId: FirebaseAuth.instance.currentUser!.uid,
               category: getSelectedCategory(),
               lat: locationProvider.eventLocation!.latitude,
-              lng: locationProvider.eventLocation!.longitude
-          ));
+              lng: locationProvider.eventLocation!.longitude));
           Navigator.pop(context);
           DialogUtils.showToast("Event Added success");
-        }else{
+        } else {
           DialogUtils.showToast("Location Should Entered");
         }
-      }else{
+      } else {
         DialogUtils.showToast("Please Enter Date and Time");
       }
     }
   }
-  String getSelectedCategory(){
-    if(selectedIndex==0){
+
+  String getSelectedCategory() {
+    if (selectedIndex == 0) {
       return bookCategory;
-    }else if(selectedIndex==1){
+    } else if (selectedIndex == 1) {
       return sportCategory;
-    }else{
+    } else {
       return birthDayCategory;
     }
   }
