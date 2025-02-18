@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/home_screen/tabs/profile_tab/widget/languagesheet.dart';
 import 'package:evently/ui/home_screen/tabs/profile_tab/widget/themesheet.dart';
 import 'package:evently/ui/login_screen/screen/login_screen.dart';
@@ -15,6 +16,7 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -52,7 +54,7 @@ class ProfileTab extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      StringsManger.const_p_name.tr(),
+                      userProvider.user?.name??"No Name",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Gap(8),

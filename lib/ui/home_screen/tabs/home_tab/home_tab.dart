@@ -2,7 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/providers/user_provider.dart';
+import 'package:evently/ui/home_screen/tabs/home_tab/widgets/all_events.dart';
+import 'package:evently/ui/home_screen/tabs/home_tab/widgets/birthDay_events.dart';
+import 'package:evently/ui/home_screen/tabs/home_tab/widgets/book_events.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/widgets/event_item.dart';
+import 'package:evently/ui/home_screen/tabs/home_tab/widgets/sport_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -18,6 +23,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return DefaultTabController(
       length: 4,
@@ -48,8 +54,10 @@ class _HomeTabState extends State<HomeTab> {
                                 ?.copyWith(
                                     fontSize: 14, fontWeight: FontWeight.w400),
                           ),
-                          Text(
-                            StringsManger.const_p_name.tr(),
+                          userProvider.isLoading
+                              ?CircularProgressIndicator(color:Colors.white ,)
+                              :Text(
+                            userProvider.user?.name??"No Name",
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ],
@@ -241,22 +249,10 @@ class _HomeTabState extends State<HomeTab> {
               child: TabBarView(
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    ListView.separated(
-                        itemBuilder: (context, index) => EventItem(),
-                        separatorBuilder: (context, index) => Gap(16),
-                        itemCount: 10),
-                    ListView.separated(
-                        itemBuilder: (context, index) => EventItem(),
-                        separatorBuilder: (context, index) => Gap(16),
-                        itemCount: 10),
-                    ListView.separated(
-                        itemBuilder: (context, index) => EventItem(),
-                        separatorBuilder: (context, index) => Gap(16),
-                        itemCount: 10),
-                    ListView.separated(
-                        itemBuilder: (context, index) => EventItem(),
-                        separatorBuilder: (context, index) => Gap(16),
-                        itemCount: 10),
+                    AllEvents(),
+                    SportEvents(),
+                    BirthDayEvents(),
+                    BookEvents()
                   ]),
             ),
           )

@@ -65,5 +65,6 @@
   "title_birthday": "This is a Birthday Party ",
   "const_day": "21",
   "const_month": "Nov",
-  "tap_to_select": "Tap on Location To Select"
+  "tap_to_select": "Tap on Location To Select",
+  "no_events_yet": "No Events Yet"
 }

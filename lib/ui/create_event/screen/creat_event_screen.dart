@@ -1,12 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
+import 'package:evently/core/constants.dart';
+import 'package:evently/core/fireStoreHandler.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/model/Event.dart';
 import 'package:evently/providers/location_provider.dart';
 import 'package:evently/ui/event_location/screen/event_location_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -197,15 +202,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   Gap(8),
                   CustomField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          DialogUtils.showMessageDialog(
-                              context: context,
-                              message: StringsManger.not_empty.tr(),
-                              buttonTitle: StringsManger.ok.tr(),
-                              positiveBtnClick: () {
-                                Navigator.pop(context);
-                              });
+                      validator: (value){
+                        if(value==null ||value.isEmpty){
+                          return StringsManger.not_empty.tr();
                         }
                         return null;
                       },
@@ -220,15 +219,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   CustomField(
                       maxLines: 3,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          DialogUtils.showMessageDialog(
-                              context: context,
-                              message: StringsManger.not_empty.tr(),
-                              buttonTitle: StringsManger.ok.tr(),
-                              positiveBtnClick: () {
-                                Navigator.pop(context);
-                              });
+                      validator: (value){
+                        if(value==null ||value.isEmpty){
+                          return StringsManger.not_empty.tr();
                         }
                         return null;
                       },
@@ -345,7 +338,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   Container(
                     width: double.infinity,
                     child: CustomButton(
-                        title: StringsManger.add_event.tr(), onPressed: () {}),
+                        title: StringsManger.add_event.tr(),
+                        onPressed: () {
+                          addNewEvent();
+                        }),
                   ),
                 ],
               ),
@@ -379,6 +375,40 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     if (tempDate != null) {
       selectedTime = tempDate;
       setState(() {});
+    }
+  }
+  addNewEvent()async{
+    if(formKey.currentState!.validate()){
+      if(selectedDate!=null&&selectedTime!=null){
+        DateTime eventDate=DateTime(
+            selectedDate!.year,
+            selectedDate!.month,
+            selectedDate!.day,
+            selectedTime!.hour,
+            selectedTime!.minute);
+        DialogUtils.showLoadingDialog(context);
+        await FireStoreHandler.createEvent(Event(
+            title: titleController.text,
+            description: descController.text,
+            date: Timestamp.fromDate(eventDate),
+            isWishList: false,
+            userId: FirebaseAuth.instance.currentUser!.uid,
+            category: getSelectedCategory()
+        ));
+        Navigator.pop(context);
+        DialogUtils.showToast("Event Added success");
+      }else{
+        DialogUtils.showToast("Please Enter Date and Time");
+      }
+    }
+  }
+  String getSelectedCategory(){
+    if(selectedIndex==0){
+      return bookCategory;
+    }else if(selectedIndex==1){
+      return sportCategory;
+    }else{
+      return birthDayCategory;
     }
   }
 }

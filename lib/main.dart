@@ -4,6 +4,7 @@ import 'package:evently/core/prefshelper.dart';
 import 'package:evently/firebase_options.dart';
 import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/create_event/screen/creat_event_screen.dart';
 import 'package:evently/ui/event_location/screen/event_location_screen.dart';
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
@@ -57,8 +58,11 @@ class MyApp extends StatelessWidget {
         LoginScreen.routName: (_) => LoginScreen(),
         ForgetPasswordScreen.routName: (_) => ForgetPasswordScreen(),
         HomeScreen.routeName: (_) => ChangeNotifierProvider(
-            create: (context) => LocationProvider()..getPermission(),
-            child: HomeScreen()),
+          create: (context) => UserProvider()..getUser(),
+          child: ChangeNotifierProvider(
+              create: (context) => LocationProvider()..getPermission(),
+              child: HomeScreen()),
+        ),
         EventLocationScreen.routeName:(_)=> ChangeNotifierProvider(
             create: (context) => LocationProvider(),
             child:EventLocationScreen()),

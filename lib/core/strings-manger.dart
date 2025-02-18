@@ -68,4 +68,5 @@ abstract class StringsManger {
   static const String const_day="const_day";
   static const String const_month="const_month";
   static const String tap_to_select="tap_to_select";
+  static const String no_events_yet="no_events_yet";
 }

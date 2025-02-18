@@ -65,5 +65,6 @@
   "title_birthday": "هذه حفلة عيد ميلاد ",
   "const_day": "21",
   "const_month": "نوفمبر",
-  "tap_to_select": "أضغط لاختيار الموقع"
+  "tap_to_select": "أضغط لاختيار الموقع",
+  "no_events_yet": "لا توجد دعوات حتى الان"
 }
