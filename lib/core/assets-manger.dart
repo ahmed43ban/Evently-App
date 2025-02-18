@@ -35,6 +35,9 @@ abstract class AssetsManger{
   static const String search = "assets/images/Search.svg";
   static const String writeText = "assets/images/Note_Edit.svg";
   static const String birthday = "assets/images/birthday.png";
+  static const String birtday_dark = "assets/images/birtday_dark.png";
   static const String sportcard = "assets/images/sportcard.png";
+  static const String sport_card_light = "assets/images/sport_card_light.png";
   static const String book_club = "assets/images/Book_Club.png";
+  static const String book_club_light = "assets/images/book_club_light.png";
 }

@@ -1,13 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
+import 'package:evently/core/constants.dart';
+import 'package:evently/core/fireStoreHandler.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/model/Event.dart';
+import 'package:evently/providers/location_provider.dart';
+import 'package:evently/ui/event_location/screen/event_location_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const String routeName = "createEvent";
@@ -21,6 +29,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   late TextEditingController descController;
   int selectedIndex = 0;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late LocationProvider locationProvider;
 
   @override
   void initState() {
@@ -28,6 +37,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     super.initState();
     titleController = TextEditingController();
     descController = TextEditingController();
+    locationProvider = Provider.of<LocationProvider>(context, listen: false);
   }
 
   @override
@@ -36,10 +46,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     super.dispose();
     titleController.dispose();
     descController.dispose();
+    locationProvider.eventLocation = null;
   }
 
   @override
   Widget build(BuildContext context) {
+    locationProvider = Provider.of<LocationProvider>(context);
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -194,13 +206,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   CustomField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          DialogUtils.showMessageDialog(
-                              context: context,
-                              message: StringsManger.not_empty.tr(),
-                              buttonTitle: StringsManger.ok.tr(),
-                              positiveBtnClick: () {
-                                Navigator.pop(context);
-                              });
+                          return StringsManger.not_empty.tr();
                         }
                         return null;
                       },
@@ -217,13 +223,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       maxLines: 3,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          DialogUtils.showMessageDialog(
-                              context: context,
-                              message: StringsManger.not_empty.tr(),
-                              buttonTitle: StringsManger.ok.tr(),
-                              positiveBtnClick: () {
-                                Navigator.pop(context);
-                              });
+                          return StringsManger.not_empty.tr();
                         }
                         return null;
                       },
@@ -303,6 +303,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   Gap(8),
                   InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, EventLocationScreen.routeName);
+                    },
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -313,7 +317,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           SvgPicture.asset(AssetsManger.chooseLocation),
                           Gap(8),
                           Expanded(
-                            child: Text(StringsManger.choose_location.tr(),
+                            child: Text(
+                                locationProvider.eventLocation == null
+                                    ? StringsManger.choose_location.tr()
+                                    : "Location is ${locationProvider.eventLocation!.latitude}:${locationProvider.eventLocation!.longitude}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
@@ -335,7 +342,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   Container(
                     width: double.infinity,
                     child: CustomButton(
-                        title: StringsManger.add_event.tr(), onPressed: () {}),
+                        title: StringsManger.add_event.tr(),
+                        onPressed: () {
+                          addNewEvent();
+                        }),
                   ),
                 ],
               ),
@@ -369,6 +379,43 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     if (tempDate != null) {
       selectedTime = tempDate;
       setState(() {});
+    }
+  }
+
+  addNewEvent() async {
+    if (formKey.currentState!.validate()) {
+      if (selectedDate != null && selectedTime != null) {
+        if (locationProvider.eventLocation != null) {
+          DateTime eventDate = DateTime(selectedDate!.year, selectedDate!.month,
+              selectedDate!.day, selectedTime!.hour, selectedTime!.minute);
+          DialogUtils.showLoadingDialog(context);
+          await FireStoreHandler.createEvent(Event(
+              title: titleController.text,
+              description: descController.text,
+              date: Timestamp.fromDate(eventDate),
+              isWishList: false,
+              userId: FirebaseAuth.instance.currentUser!.uid,
+              category: getSelectedCategory(),
+              lat: locationProvider.eventLocation!.latitude,
+              lng: locationProvider.eventLocation!.longitude));
+          Navigator.pop(context);
+          DialogUtils.showToast("Event Added success");
+        } else {
+          DialogUtils.showToast("Location Should Entered");
+        }
+      } else {
+        DialogUtils.showToast("Please Enter Date and Time");
+      }
+    }
+  }
+
+  String getSelectedCategory() {
+    if (selectedIndex == 0) {
+      return bookCategory;
+    } else if (selectedIndex == 1) {
+      return sportCategory;
+    } else {
+      return birthDayCategory;
     }
   }
 }

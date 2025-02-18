@@ -1,12 +1,32 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
-import 'package:evently/core/strings-manger.dart';
+import 'package:evently/core/constants.dart';
+import 'package:evently/core/fireStoreHandler.dart';
+import 'package:evently/model/Event.dart';
+import 'package:evently/providers/theme_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
-class EventItem extends StatelessWidget {
-  const EventItem({super.key});
+class EventItem extends StatefulWidget {
+  Event event;
+
+  EventItem({required this.event, super.key});
+
+  @override
+  State<EventItem> createState() => _EventItemState();
+}
+
+class _EventItemState extends State<EventItem> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +36,7 @@ class EventItem extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           image: DecorationImage(
-              image: AssetImage(AssetsManger.birthday), fit: BoxFit.cover)),
+              image: AssetImage(getImageByCategory()), fit: BoxFit.cover)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -31,11 +51,12 @@ class EventItem extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    StringsManger.const_day.tr(),
+                    widget.event.date!.toDate().day.toString(),
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    StringsManger.const_month.tr(),
+                    DateFormat.MMM(context.locale.languageCode)
+                        .format(widget.event.date!.toDate()),
                     style: Theme.of(context).textTheme.titleMedium,
                   )
                 ],
@@ -51,15 +72,38 @@ class EventItem extends StatelessWidget {
                 children: [
                   Expanded(
                       child: Text(
-                    StringsManger.title_birthday.tr(),
+                    widget.event.title!,
                     style: Theme.of(context).textTheme.displaySmall,
                   )),
-                  SvgPicture.asset(
-                    AssetsManger.loveSelected,
-                    height: 24,
-                    width: 24,
-                    colorFilter: ColorFilter.mode(
-                        ColorManger.lightPrimary, BlendMode.srcIn),
+                  InkWell(
+                    onTap: () async {
+                      if (widget.event.isWishList ?? false) {
+                        DialogUtils.showLoadingDialog(context);
+                        await FireStoreHandler.removeFromFavorite(
+                            FirebaseAuth.instance.currentUser!.uid,
+                            widget.event.id!);
+                        widget.event.isWishList = false;
+                        setState(() {});
+                        Navigator.pop(context);
+                      } else {
+                        DialogUtils.showLoadingDialog(context);
+                        await FireStoreHandler.addToFavorite(
+                            FirebaseAuth.instance.currentUser!.uid,
+                            widget.event);
+                        widget.event.isWishList = true;
+                        setState(() {});
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: SvgPicture.asset(
+                      widget.event.isWishList!
+                          ? AssetsManger.loveSelected
+                          : AssetsManger.loveUnSelected,
+                      height: 24,
+                      width: 24,
+                      colorFilter: ColorFilter.mode(
+                          ColorManger.lightPrimary, BlendMode.srcIn),
+                    ),
                   )
                 ],
               ),
@@ -68,5 +112,26 @@ class EventItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  late ThemeProvider themeProvider;
+
+  String getImageByCategory() {
+    if (widget.event.category == sportCategory) {
+      if (themeProvider.currentTheme == ThemeMode.dark) {
+        return AssetsManger.sportcard;
+      }
+      return AssetsManger.sport_card_light;
+    } else if (widget.event.category == birthDayCategory) {
+      if (themeProvider.currentTheme == ThemeMode.dark) {
+        return AssetsManger.birtday_dark;
+      }
+      return AssetsManger.birtday_dark;
+    } else {
+      if (themeProvider.currentTheme == ThemeMode.dark) {
+        return AssetsManger.book_club;
+      }
+      return AssetsManger.book_club;
+    }
   }
 }

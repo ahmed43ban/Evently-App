@@ -2,8 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/app_style.dart';
 import 'package:evently/core/prefshelper.dart';
 import 'package:evently/firebase_options.dart';
+import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/create_event/screen/creat_event_screen.dart';
+import 'package:evently/ui/event_location/screen/event_location_screen.dart';
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
 import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:evently/ui/login_screen/screen/login_screen.dart';
@@ -27,9 +30,14 @@ void main() async {
       path: 'assets/translations',
       // <-- change the path of the translation files
       fallbackLocale: Locale('en'),
-      child: ChangeNotifierProvider(
+      child: MultiProvider(providers: [
+        ChangeNotifierProvider(
           create: (context) => ThemeProvider()..initTheme(),
-          child: const MyApp())));
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(),
+        ),
+      ], child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {
@@ -54,12 +62,18 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routName: (_) => RegisterScreen(),
         LoginScreen.routName: (_) => LoginScreen(),
         ForgetPasswordScreen.routName: (_) => ForgetPasswordScreen(),
-        HomeScreen.routeName: (_) => HomeScreen(),
+        HomeScreen.routeName: (_) => ChangeNotifierProvider(
+              create: (context) => UserProvider()..getUser(),
+              child: HomeScreen(),
+            ),
+        EventLocationScreen.routeName: (_) => EventLocationScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
       },
-      initialRoute: FirebaseAuth.instance.currentUser == null
-          ? LoginScreen.routName
-          : HomeScreen.routeName,
+      initialRoute: PrefHelper.getOnboarding()
+          ? FirebaseAuth.instance.currentUser == null
+              ? LoginScreen.routName
+              : HomeScreen.routeName
+          : StartScreen.routName,
     );
   }
 }
