@@ -17,16 +17,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class CreateEventScreen extends StatefulWidget {
-  static const String routeName = "createEvent";
+class UpdateEventScreen extends StatefulWidget {
+  static const String routeName = "update_Event";
 
   @override
-  State<CreateEventScreen> createState() => _CreateEventScreenState();
+  State<UpdateEventScreen> createState() => _UpdateEventScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
+class _UpdateEventScreenState extends State<UpdateEventScreen> {
   late TextEditingController titleController;
   late TextEditingController descController;
   int selectedIndex = 0;
@@ -54,13 +55,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
+    Event args = ModalRoute.of(context)?.settings.arguments as Event;
     locationProvider = Provider.of<LocationProvider>(context);
+    locationProvider.getLocation();
     double height = MediaQuery.of(context).size.height;
+
+    // Creating a custom marker with a custom icon
+    Marker eventMarker = Marker(
+      markerId: MarkerId(args.id!),
+      position: LatLng(args.lat!, args.lng!), // Using the lat and lng args
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange), // Custom hue (color)
+      infoWindow: InfoWindow(title: args.title), // InfoWindow showing event title
+    );
+
+      descController.text=args.description!;
+      titleController.text=args.title!;
+    locationProvider.markers.add(eventMarker);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: ColorManger.lightPrimary),
         title: Text(
-          StringsManger.create_event.tr(),
+          StringsManger.edit_event.tr(),
           style: TextStyle(color: ColorManger.lightPrimary),
         ),
       ),
@@ -84,7 +99,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               child: Image.asset(
                                 themeProvider.currentTheme==ThemeMode.dark
                                     ?AssetsManger.book_club
-                                :AssetsManger.book_club_light,
+                                    :AssetsManger.book_club_light,
                                 height: height * 0.2,
                                 fit: BoxFit.cover,
                               )),
@@ -264,7 +279,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             child: Text(
                                 selectedDate != null
                                     ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                                    : StringsManger.choose_date.tr(),
+                                    : DateFormat.yMd(context.locale.languageCode)
+                                    .format(args.date!.toDate()),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
@@ -295,7 +311,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             },
                             child: Text(
                                 selectedTime == null
-                                    ? StringsManger.choose_time.tr()
+                                    ?DateFormat.Hm(context.locale.languageCode)
+                                    .format(args.date!.toDate())
                                     : "${selectedTime!.hourOfPeriod}:${selectedTime!.minute}${selectedTime!.period.name}",
                                 style: Theme.of(context)
                                     .textTheme
@@ -326,13 +343,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           SvgPicture.asset(AssetsManger.chooseLocation),
                           Gap(8),
                           Expanded(
-                            child:FutureBuilder<String?>(
-                              // Get the location name asynchronously
-                              future: locationProvider.eventLocation != null
-                                  ? GetLocationName.getLocationName(
+                            child: FutureBuilder<String?>(
+                              future: locationProvider.eventLocation==null?
+                              GetLocationName.getLocationName(
+                                  eventMarker.position.latitude,
+                                  eventMarker.position.longitude)
+                                  :GetLocationName.getLocationName(
                                   locationProvider.eventLocation!.latitude,
-                                  locationProvider.eventLocation!.longitude)
-                                  : Future.value(null),
+                                  locationProvider.eventLocation!.longitude),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Text(
@@ -368,7 +386,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                   );
                                 }
                               },
-                            )
+                            ),
                           ),
                           Align(
                               alignment: AlignmentDirectional.centerEnd,
@@ -386,7 +404,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     child: CustomButton(
                         title: StringsManger.add_event.tr(),
                         onPressed: () {
-                          addNewEvent();
+
                         }),
                   ),
                 ],
@@ -424,7 +442,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     }
   }
 
-  addNewEvent() async {
+  updateEvent() async {
     if (formKey.currentState!.validate()) {
       if (selectedDate != null && selectedTime != null) {
         if (locationProvider.eventLocation != null) {

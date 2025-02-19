@@ -2,16 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
+import 'package:evently/core/get_location_name.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/model/Event.dart';
 import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/ui/update_event/screen/update_event_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
 
 class EventDetailsScreen extends StatefulWidget {
   static const String routeName = "Event Details";
@@ -20,14 +23,30 @@ class EventDetailsScreen extends StatefulWidget {
 
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
+
 }
 
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
+  late Future<String?> locationFuture;
+  Event? args;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (args == null) {
+      // Now you can safely access args after build context is initialized
+      args = ModalRoute.of(context)?.settings.arguments as Event;
+
+      // Fetch location name here
+      locationFuture = GetLocationName.getLocationName(args!.lat!, args!.lng!);
+    }
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+
   }
 
   @override
@@ -36,6 +55,17 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     LocationProvider locationProvider = Provider.of<LocationProvider>(context);
     locationProvider.getLocation();
     double height = MediaQuery.of(context).size.height;
+
+    // Creating a custom marker with a custom icon
+    Marker eventMarker = Marker(
+      markerId: MarkerId(args.id!),
+      position: LatLng(args.lat!, args.lng!), // Using the lat and lng args
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange), // Custom hue (color)
+      infoWindow: InfoWindow(title: args.title), // InfoWindow showing event title
+    );
+
+    locationProvider.markers.add(eventMarker); // Add the marker to the provider's list
+
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: ColorManger.lightPrimary),
@@ -45,26 +75,28 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           ),
           actions: args.userId == FirebaseAuth.instance.currentUser!.uid
               ? [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: InkWell(
-                        onTap: () {},
-                        child: SvgPicture.asset(AssetsManger.edit_tool)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: InkWell(
-                        onTap: () {},
-                        child: SvgPicture.asset(AssetsManger.delete_tool)),
-                  ),
-                ]
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, UpdateEventScreen.routeName,arguments: args);
+                  },
+                  child: SvgPicture.asset(AssetsManger.edit_tool)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: InkWell(
+                  onTap: () {},
+                  child: SvgPicture.asset(AssetsManger.delete_tool)),
+            ),
+          ]
               : [],
         ),
         body: Padding(
           padding: EdgeInsets.all(16),
           child: SingleChildScrollView(
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 width: double.infinity,
                 height: height * 0.2,
@@ -112,9 +144,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 .textTheme
                                 .titleMedium
                                 ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondary),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondary),
                           ),
                         ],
                       ),
@@ -133,11 +165,25 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     SvgPicture.asset(AssetsManger.chooseLocation),
                     Gap(8),
                     Expanded(
-                      child: Text("Location is ${args.lat}:${args.lng}",
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    color: ColorManger.lightPrimary,
-                                  )),
+                        child:  FutureBuilder<String?>(
+                          future: locationFuture, // Fetch location name
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator(); // Show loading spinner
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}'); // Handle error
+                            } else if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data!,
+                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                  color: ColorManger.lightPrimary,
+                                ),
+                              );
+                            } else {
+                              return Text('No location found'); // Fallback message
+                            }
+                          },
+                        ),
                     ),
                     Align(
                         alignment: AlignmentDirectional.centerEnd,
@@ -155,8 +201,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: ColorManger.lightPrimary)),
-                child: Expanded(
-                    child: GoogleMap(
+                child: GoogleMap(
                   myLocationEnabled: true,
                   onTap: (location) {
                     locationProvider.chooseEventLocation(location);
@@ -168,7 +213,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   onMapCreated: (mapController) {
                     locationProvider.mapController = mapController;
                   },
-                )),
+                ),
               ),
               Gap(16),
               Text(

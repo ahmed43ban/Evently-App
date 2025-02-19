@@ -70,4 +70,6 @@ abstract class StringsManger {
   static const String tap_to_select="tap_to_select";
   static const String no_events_yet="no_events_yet";
   static const String event_details="event_details";
+  static const String edit_event="edit_event";
+  static const String update_event="update_event";
 }
