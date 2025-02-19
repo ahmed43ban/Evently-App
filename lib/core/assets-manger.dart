@@ -40,4 +40,7 @@ abstract class AssetsManger{
   static const String sport_card_light = "assets/images/sport_card_light.png";
   static const String book_club = "assets/images/Book_Club.png";
   static const String book_club_light = "assets/images/book_club_light.png";
+  static const String date_details_mark = "assets/images/date_details_mark.svg";
+  static const String delete_tool = "assets/images/delet_tool.svg";
+  static const String edit_tool = "assets/images/edit_tool.svg";
 }
