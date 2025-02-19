@@ -6,6 +6,7 @@ import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/create_event/screen/creat_event_screen.dart';
+import 'package:evently/ui/event_details/screen/event_details_screen.dart';
 import 'package:evently/ui/event_location/screen/event_location_screen.dart';
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
 import 'package:evently/ui/home_screen/screen/home_screen.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
             ),
         EventLocationScreen.routeName: (_) => EventLocationScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
+        EventDetailsScreen.routeName: (_) => EventDetailsScreen()
       },
       initialRoute: PrefHelper.getOnboarding()
           ? FirebaseAuth.instance.currentUser == null
