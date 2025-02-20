@@ -13,8 +13,8 @@ class SportEvents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FireStoreHandler.getCategoryEvents(sportCategory),
+    return StreamBuilder(
+      stream: FireStoreHandler.getEventCategoryStream(sportCategory),
       builder: (context, snapshot) {
         if(snapshot.connectionState==ConnectionState.waiting){
           return Center(child: CircularProgressIndicator(),);

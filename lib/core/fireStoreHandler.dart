@@ -62,7 +62,12 @@ class FireStoreHandler {
         .toList();
     return eventList;
   }
-
+ static Stream<List<Event>> getAllEventStream()async*{
+    var collection =getEventCollection();
+    var snapshots=collection.snapshots();
+    Stream<List<Event>>eventStream=snapshots.map((snapshots) =>snapshots.docs.map((doc)=>doc.data()).toList() ,);
+    yield* eventStream;
+ }
   static Future<List<Event>> getCategoryEvents(String category) async {
     var collection =
         getEventCollection().where("category", isEqualTo: category);
@@ -74,6 +79,12 @@ class FireStoreHandler {
         )
         .toList();
     return eventList;
+  }
+  static Stream<List<Event>> getEventCategoryStream(String category)async*{
+    var collection =getEventCollection().where("category", isEqualTo: category);
+    var snapshots=collection.snapshots();
+    Stream<List<Event>>eventStream=snapshots.map((snapshots) =>snapshots.docs.map((doc)=>doc.data()).toList() ,);
+    yield* eventStream;
   }
 
   static CollectionReference<Event> getWishListCollection(String uid) {
@@ -101,6 +112,12 @@ class FireStoreHandler {
         .toList();
     return eventList;
   }
+  static Stream<List<Event>> getLoveEventStream(String uid)async*{
+    var collection =getWishListCollection(uid);
+    var snapshots=collection.snapshots();
+    Stream<List<Event>>eventStream=snapshots.map((snapshots) =>snapshots.docs.map((doc)=>doc.data()).toList() ,);
+    yield* eventStream;
+  }
 
   static Future<void> addToFavorite(String uid, Event event) {
     var collection = getWishListCollection(uid);
@@ -111,5 +128,17 @@ class FireStoreHandler {
   static Future<void> removeFromFavorite(String uid, String eventId) {
     var collection = getWishListCollection(uid);
     return collection.doc(eventId).delete();
+  }
+  static Future<void> updateUserFavorite(String uid,List<String>newFavorite){
+    var collection=getUserCollection();
+    var doc=collection.doc(uid);
+    return doc.update({
+      "favorite":newFavorite
+    });
+  }
+  static Future<void> updateEvent(Event event){
+    var collection = getEventCollection();
+    var doc = collection.doc(event.id);
+    return doc.update(event.toFireStore());
   }
 }

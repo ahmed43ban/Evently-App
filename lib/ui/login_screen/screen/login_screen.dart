@@ -3,6 +3,7 @@ import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
+import 'package:evently/core/fireStoreHandler.dart';
 import 'package:evently/core/firebase_codes.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/customField.dart';
@@ -15,6 +16,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:evently/model/User.dart' as Myuser;
 
 class LoginScreen extends StatefulWidget {
   static const String routName = "login";
@@ -167,7 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Gap(8),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        addGoogleUser();
+                      },
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
                           backgroundColor: Colors.transparent,
@@ -230,6 +235,55 @@ class _LoginScreenState extends State<LoginScreen> {
               });
         }
       }
+    }
+  }
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  addGoogleUser() async {
+    DialogUtils.showLoadingDialog(context);
+
+    try {
+      UserCredential credential = await signInWithGoogle();
+
+      // Check if user exists in Firestore
+      var user = Myuser.User(
+        id: credential.user?.uid,
+        email: credential.user?.email,
+        name: credential.user?.displayName,
+        favorite: [],
+      );
+
+      FireStoreHandler.AddUser(user);
+      Navigator.pop(context);
+
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+    }  on FirebaseAuthException catch (e) {
+      print('Google sign-in error: ${e.message}');
+    }catch (e) {
+      Navigator.pop(context);
+      DialogUtils.showMessageDialog(
+        context: context,
+        message: 'Google Sign-In failed: $e',
+        buttonTitle: StringsManger.ok.tr(),
+        positiveBtnClick: () {
+          Navigator.pop(context);
+        },
+      );
     }
   }
 }

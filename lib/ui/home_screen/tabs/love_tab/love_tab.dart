@@ -53,8 +53,8 @@ class _LoveTabState extends State<LoveTab> {
             ),
             Gap(16),
             Expanded(
-              child: FutureBuilder(
-                future: FireStoreHandler.getLoveEvents(
+              child: StreamBuilder(
+                stream: FireStoreHandler.getLoveEventStream(
                     FirebaseAuth.instance.currentUser!.uid),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {

@@ -435,7 +435,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               title: titleController.text,
               description: descController.text,
               date: Timestamp.fromDate(eventDate),
-              isWishList: false,
               userId: FirebaseAuth.instance.currentUser!.uid,
               category: getSelectedCategory(),
               lat: locationProvider.eventLocation!.latitude,

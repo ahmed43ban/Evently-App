@@ -180,7 +180,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         FireStoreHandler.AddUser(MyUser.User(
           id: credential.user!.uid,
           email: emailController.text,
-          name: nameController.text
+          name: nameController.text,
+          favorite: []
         ));
         Navigator.pop(context);
         Navigator.pushNamedAndRemoveUntil(

@@ -67,9 +67,6 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange), // Custom hue (color)
       infoWindow: InfoWindow(title: args.title), // InfoWindow showing event title
     );
-
-      descController.text=args.description!;
-      titleController.text=args.title!;
     locationProvider.markers.add(eventMarker);
     return Scaffold(
       appBar: AppBar(
@@ -234,7 +231,7 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                         }
                         return null;
                       },
-                      hint: StringsManger.event_title.tr(),
+                      hint: args.title!,
                       prefix: AssetsManger.writeText,
                       controller: titleController,
                       keyboard: TextInputType.text),
@@ -251,7 +248,7 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                         }
                         return null;
                       },
-                      hint: StringsManger.event_desc.tr(),
+                      hint: args.description!,
                       controller: descController,
                       keyboard: TextInputType.multiline),
                   Gap(16),
@@ -344,13 +341,13 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                           Gap(8),
                           Expanded(
                             child: FutureBuilder<String?>(
-                              future: locationProvider.eventLocation==null?
+                              future: locationProvider.eventLocation!=null?
                               GetLocationName.getLocationName(
-                                  eventMarker.position.latitude,
-                                  eventMarker.position.longitude)
-                                  :GetLocationName.getLocationName(
                                   locationProvider.eventLocation!.latitude,
-                                  locationProvider.eventLocation!.longitude),
+                                  locationProvider.eventLocation!.longitude)
+                                  :GetLocationName.getLocationName(
+                                eventMarker.position.latitude,
+                                eventMarker.position.longitude),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Text(
@@ -402,9 +399,9 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                   Container(
                     width: double.infinity,
                     child: CustomButton(
-                        title: StringsManger.add_event.tr(),
+                        title: StringsManger.update_event.tr(),
                         onPressed: () {
-
+                          updateEvent();
                         }),
                   ),
                 ],
@@ -449,11 +446,10 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
           DateTime eventDate = DateTime(selectedDate!.year, selectedDate!.month,
               selectedDate!.day, selectedTime!.hour, selectedTime!.minute);
           DialogUtils.showLoadingDialog(context);
-          await FireStoreHandler.createEvent(Event(
+          await FireStoreHandler.updateEvent(Event(
               title: titleController.text,
               description: descController.text,
               date: Timestamp.fromDate(eventDate),
-              isWishList: false,
               userId: FirebaseAuth.instance.currentUser!.uid,
               category: getSelectedCategory(),
               lat: locationProvider.eventLocation!.latitude,
