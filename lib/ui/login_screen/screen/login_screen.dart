@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Gap(8),
                   ElevatedButton(
                       onPressed: () {
-                        addGoogleUser();
+                        signInWithGoogle();
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
@@ -237,53 +237,59 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
-  addGoogleUser() async {
+  Future<void> signInWithGoogle() async {
     DialogUtils.showLoadingDialog(context);
 
-    try {
-      UserCredential credential = await signInWithGoogle();
+    // Initialize GoogleSignIn with the clientId
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId: '397082690929-f80rhmpcog799amh21q17t4nv4vhgtkl.apps.googleusercontent.com',
+    );
 
-      // Check if user exists in Firestore
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser == null) {
+      Navigator.pop(context);  // Stop loading dialog if the user cancels sign-in
+      return;
+    }
+
+    // Obtain the authentication details from the GoogleSignInAccount
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+    // Create a credential to use for Firebase authentication
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Try to sign in with the credential
+    try {
+      var signed = await FirebaseAuth.instance.signInWithCredential(credential);
       var user = Myuser.User(
-        id: credential.user?.uid,
-        email: credential.user?.email,
-        name: credential.user?.displayName,
+        id: signed.user?.uid ,
+        email: signed.user?.email,
+        name: signed.user?.displayName,
         favorite: [],
       );
 
+      // Save user info to Firestore (if required)
       FireStoreHandler.AddUser(user);
-      Navigator.pop(context);
 
+      // Navigate to the HomeScreen
+      Navigator.pop(context); // Stop loading dialog
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-    }  on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);  // Stop loading dialog
       print('Google sign-in error: ${e.message}');
-    }catch (e) {
-      Navigator.pop(context);
       DialogUtils.showMessageDialog(
-        context: context,
-        message: 'Google Sign-In failed: $e',
-        buttonTitle: StringsManger.ok.tr(),
-        positiveBtnClick: () {
-          Navigator.pop(context);
-        },
+          context: context,
+          message: 'Google Sign-In failed: $e',
+          buttonTitle: StringsManger.ok.tr(),
+          positiveBtnClick: () {
+            Navigator.pop(context);
+          }
       );
     }
   }
+
+
 }

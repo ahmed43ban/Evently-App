@@ -340,14 +340,14 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                           SvgPicture.asset(AssetsManger.chooseLocation),
                           Gap(8),
                           Expanded(
-                            child: FutureBuilder<String?>(
-                              future: locationProvider.eventLocation!=null?
-                              GetLocationName.getLocationName(
+                            child:FutureBuilder<String?>(
+                              future: locationProvider.eventLocation != null
+                                  ? GetLocationName.getLocationName(
                                   locationProvider.eventLocation!.latitude,
                                   locationProvider.eventLocation!.longitude)
-                                  :GetLocationName.getLocationName(
-                                eventMarker.position.latitude,
-                                eventMarker.position.longitude),
+                                  : GetLocationName.getLocationName(
+                                  eventMarker.position.latitude,
+                                  eventMarker.position.longitude),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Text(
@@ -383,7 +383,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                                   );
                                 }
                               },
-                            ),
+                            )
+                            ,
                           ),
                           Align(
                               alignment: AlignmentDirectional.centerEnd,
@@ -401,7 +402,7 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                     child: CustomButton(
                         title: StringsManger.update_event.tr(),
                         onPressed: () {
-                          updateEvent();
+                          updateEvent(args.id!);
                         }),
                   ),
                 ],
@@ -439,7 +440,7 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
     }
   }
 
-  updateEvent() async {
+  updateEvent(String id) async {
     if (formKey.currentState!.validate()) {
       if (selectedDate != null && selectedTime != null) {
         if (locationProvider.eventLocation != null) {
@@ -453,13 +454,15 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
               userId: FirebaseAuth.instance.currentUser!.uid,
               category: getSelectedCategory(),
               lat: locationProvider.eventLocation!.latitude,
-              lng: locationProvider.eventLocation!.longitude));
+              lng: locationProvider.eventLocation!.longitude),id);
           Navigator.pop(context);
-          DialogUtils.showToast("Event Added success");
+          DialogUtils.showToast("Event Updated success");
         } else {
+          Navigator.pop(context);
           DialogUtils.showToast("Location Should Entered");
         }
       } else {
+        Navigator.pop(context);
         DialogUtils.showToast("Please Enter Date and Time");
       }
     }

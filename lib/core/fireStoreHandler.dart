@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/model/Event.dart';
 import 'package:evently/model/User.dart' as Myuser;
 
@@ -136,9 +137,39 @@ class FireStoreHandler {
       "favorite":newFavorite
     });
   }
-  static Future<void> updateEvent(Event event){
+ /* static Future<void> updateEvent(Event event){
     var collection = getEventCollection();
     var doc = collection.doc(event.id);
     return doc.update(event.toFireStore());
+  }*/
+  static Future<void> updateEvent(Event event,String id) async {
+    final eventDoc = FirebaseFirestore.instance.collection('events').doc(id);
+
+    try {
+      // Check if the document exists
+      final docSnapshot = await eventDoc.get();
+
+      if (docSnapshot.exists) {
+        // Document exists, proceed to update
+        await eventDoc.update({
+          "title":event.title,
+          "description":event.description,
+          "category":event.category,
+          "date":event.date,
+          "lat":event.lat,
+          "lng":event.lng,
+          "id":id
+        });
+        print("Event updated successfully!");
+      } else {
+        // Document doesn't exist
+        print("Event not found in Firestore.");
+        DialogUtils.showToast("Event not found in Firestore.");
+      }
+    } catch (e) {
+      // Catch any errors that occur during the update
+      print("Error updating event: $e");
+      DialogUtils.showToast("Error updating event: $e");
+    }
   }
 }
