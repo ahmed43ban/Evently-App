@@ -238,15 +238,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
   Future<void> signInWithGoogle() async {
-    DialogUtils.showLoadingDialog(context);
-
-    // Initialize GoogleSignIn with the clientId
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: '397082690929-f80rhmpcog799amh21q17t4nv4vhgtkl.apps.googleusercontent.com',
-    );
 
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     if (googleUser == null) {
       Navigator.pop(context);  // Stop loading dialog if the user cancels sign-in
       return;
@@ -275,10 +269,8 @@ class _LoginScreenState extends State<LoginScreen> {
       FireStoreHandler.AddUser(user);
 
       // Navigate to the HomeScreen
-      Navigator.pop(context); // Stop loading dialog
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);  // Stop loading dialog
       print('Google sign-in error: ${e.message}');
       DialogUtils.showMessageDialog(
           context: context,
