@@ -262,14 +262,13 @@ class _LoginScreenState extends State<LoginScreen> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     // Try to sign in with the credential
     try {
       var signed = await FirebaseAuth.instance.signInWithCredential(credential);
       var user = Myuser.User(
-        id: signed.user?.uid,
-        email: signed.user?.email,
-        name: signed.user?.displayName,
+        id: signed.user!.uid,
+        email: signed.user!.email,
+        name: signed.user!.displayName,
         favorite: [],
       );
       Navigator.pop(context);

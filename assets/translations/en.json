@@ -69,5 +69,8 @@
   "no_events_yet": "No Events Yet",
   "event_details": "Event Details",
   "edit_event": "Edit Event",
-  "update_event": "Update Event"
+  "update_event": "Update Event",
+  "confirm_log_out": "Are You Sure You Want Log Out",
+  "confirm_delete_event": "Are You Sure You Delete This Event",
+  "cancel": "Cancel"
 }

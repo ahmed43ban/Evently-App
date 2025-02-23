@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/theme_provider.dart';
@@ -158,9 +159,7 @@ class ProfileTab extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16)),
                         backgroundColor: Colors.redAccent),
                     onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.pushReplacementNamed(
-                          context, LoginScreen.routName);
+                      logOutDialog(context);
                     },
                     child: Row(
                       children: [
@@ -184,5 +183,20 @@ class ProfileTab extends StatelessWidget {
         )
       ],
     );
+  }
+  logOutDialog(context){
+    DialogUtils.showMessageDialog(
+        context: context,
+        message: StringsManger.confirm_log_out.tr(),
+        buttonTitle2: StringsManger.cancel.tr(),
+        positiveBtnClick2: (){
+          Navigator.pop(context);
+        },
+        buttonTitle: StringsManger.ok.tr(),
+        positiveBtnClick: (){
+          FirebaseAuth.instance.signOut();
+          Navigator.pushReplacementNamed(
+              context, LoginScreen.routName);
+        });
   }
 }

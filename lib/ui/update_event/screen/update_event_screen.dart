@@ -59,7 +59,10 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
     locationProvider = Provider.of<LocationProvider>(context);
     locationProvider.getLocation();
     double height = MediaQuery.of(context).size.height;
-
+    /*setState(() {
+      selectedIndex =argsIndex(args.category!);
+      print(selectedIndex);
+    });*/
     // Creating a custom marker with a custom icon
     Marker eventMarker = Marker(
       markerId: MarkerId(args.id!),
@@ -86,335 +89,340 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
           child: Padding(
             padding: EdgeInsets.all(16),
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: height * 0.2,
-                    child: TabBarView(
-                        physics: NeverScrollableScrollPhysics(),
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.asset(
-                                themeProvider.currentTheme == ThemeMode.dark
-                                    ? AssetsManger.book_club
-                                    : AssetsManger.book_club_light,
-                                height: height * 0.2,
-                                fit: BoxFit.cover,
-                              )),
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.asset(
-                                themeProvider.currentTheme == ThemeMode.dark
-                                    ? AssetsManger.sportcard
-                                    : AssetsManger.sportcard,
-                                height: height * 0.2,
-                                fit: BoxFit.cover,
-                              )),
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.asset(
-                                themeProvider.currentTheme == ThemeMode.dark
-                                    ? AssetsManger.birtday_dark
-                                    : AssetsManger.birthday,
-                                height: height * 0.2,
-                                fit: BoxFit.cover,
-                              )),
+              child: InkWell(
+                onTap: (){
+                  FocusScope.of(context).unfocus();
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: height * 0.2,
+                      child: TabBarView(
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.asset(
+                                  themeProvider.currentTheme == ThemeMode.dark
+                                      ? AssetsManger.book_club
+                                      : AssetsManger.book_club_light,
+                                  height: height * 0.2,
+                                  fit: BoxFit.cover,
+                                )),
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.asset(
+                                  themeProvider.currentTheme == ThemeMode.dark
+                                      ? AssetsManger.sportcard
+                                      : AssetsManger.sportcard,
+                                  height: height * 0.2,
+                                  fit: BoxFit.cover,
+                                )),
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.asset(
+                                  themeProvider.currentTheme == ThemeMode.dark
+                                      ? AssetsManger.birtday_dark
+                                      : AssetsManger.birthday,
+                                  height: height * 0.2,
+                                  fit: BoxFit.cover,
+                                )),
+                          ]),
+                    ),
+                    Gap(16),
+                    TabBar(
+                        onTap: (index) {
+                          selectedIndex = index;
+                          setState(() {});
+                        },
+                        labelColor: Colors.white,
+                        unselectedLabelColor: ColorManger.lightPrimary,
+                        indicator: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(46),
+                        ),
+                        tabAlignment: TabAlignment.start,
+                        isScrollable: true,
+                        dividerHeight: 0,
+                        tabs: [
+                          Tab(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: ColorManger.lightPrimary),
+                                  borderRadius: BorderRadius.circular(46)),
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    AssetsManger.book_event,
+                                    colorFilter: ColorFilter.mode(
+                                        selectedIndex == 0
+                                            ? Colors.white
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onPrimaryFixedVariant,
+                                        BlendMode.srcIn),
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                  Gap(8),
+                                  Text(StringsManger.book_club.tr())
+                                ],
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: ColorManger.lightPrimary),
+                                  borderRadius: BorderRadius.circular(46)),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    AssetsManger.sport_event,
+                                    colorFilter: ColorFilter.mode(
+                                        selectedIndex == 1
+                                            ? Colors.white
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onPrimaryFixedVariant,
+                                        BlendMode.srcIn),
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                  Gap(8),
+                                  Text(StringsManger.sport.tr())
+                                ],
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: ColorManger.lightPrimary),
+                                  borderRadius: BorderRadius.circular(46)),
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    AssetsManger.cake_event,
+                                    colorFilter: ColorFilter.mode(
+                                        selectedIndex == 2
+                                            ? Colors.white
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onPrimaryFixedVariant,
+                                        BlendMode.srcIn),
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                  Gap(8),
+                                  Text(StringsManger.birthday.tr())
+                                ],
+                              ),
+                            ),
+                          ),
                         ]),
-                  ),
-                  Gap(16),
-                  TabBar(
-                      onTap: (index) {
-                        selectedIndex = index;
-                        setState(() {});
-                      },
-                      labelColor: Colors.white,
-                      unselectedLabelColor: ColorManger.lightPrimary,
-                      indicator: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(46),
-                      ),
-                      tabAlignment: TabAlignment.start,
-                      isScrollable: true,
-                      dividerHeight: 0,
-                      tabs: [
-                        Tab(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: ColorManger.lightPrimary),
-                                borderRadius: BorderRadius.circular(46)),
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  AssetsManger.book_event,
-                                  colorFilter: ColorFilter.mode(
-                                      selectedIndex == 0
-                                          ? Colors.white
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onPrimaryFixedVariant,
-                                      BlendMode.srcIn),
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                Gap(8),
-                                Text(StringsManger.book_club.tr())
-                              ],
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: ColorManger.lightPrimary),
-                                borderRadius: BorderRadius.circular(46)),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  AssetsManger.sport_event,
-                                  colorFilter: ColorFilter.mode(
-                                      selectedIndex == 1
-                                          ? Colors.white
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onPrimaryFixedVariant,
-                                      BlendMode.srcIn),
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                Gap(8),
-                                Text(StringsManger.sport.tr())
-                              ],
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: ColorManger.lightPrimary),
-                                borderRadius: BorderRadius.circular(46)),
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  AssetsManger.cake_event,
-                                  colorFilter: ColorFilter.mode(
-                                      selectedIndex == 2
-                                          ? Colors.white
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onPrimaryFixedVariant,
-                                      BlendMode.srcIn),
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                Gap(8),
-                                Text(StringsManger.birthday.tr())
-                              ],
-                            ),
-                          ),
-                        ),
-                      ]),
-                  Gap(16),
-                  Text(
-                    StringsManger.title.tr(),
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Gap(8),
-                  CustomField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return StringsManger.not_empty.tr();
-                        }
-                        return null;
-                      },
-                      hint: args.title!,
-                      prefix: AssetsManger.writeText,
-                      controller: titleController,
-                      keyboard: TextInputType.text),
-                  Gap(8),
-                  Text(
-                    StringsManger.desc.tr(),
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  CustomField(
-                      maxLines: 3,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return StringsManger.not_empty.tr();
-                        }
-                        return null;
-                      },
-                      hint: args.description!,
-                      controller: descController,
-                      keyboard: TextInputType.multiline),
-                  Gap(16),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        AssetsManger.date_mark,
-                        colorFilter: ColorFilter.mode(
-                            Theme.of(context).colorScheme.secondary,
-                            BlendMode.srcIn),
-                      ),
-                      Gap(8),
-                      Expanded(
-                        child: Text(
-                          StringsManger.event_date.tr(),
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: TextButton(
-                            onPressed: () {
-                              chooseEventDate();
-                            },
-                            child: Text(
-                                selectedDate != null
-                                    ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                                    : DateFormat.yMd(
-                                            context.locale.languageCode)
-                                        .format(args.date!.toDate()),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(
-                                      color: ColorManger.lightPrimary,
-                                    ))),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(AssetsManger.time_mark,
+                    Gap(16),
+                    Text(
+                      StringsManger.title.tr(),
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Gap(8),
+                    CustomField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return StringsManger.not_empty.tr();
+                          }
+                          return null;
+                        },
+                        hint: args.title!,
+                        prefix: AssetsManger.writeText,
+                        controller: titleController,
+                        keyboard: TextInputType.text),
+                    Gap(8),
+                    Text(
+                      StringsManger.desc.tr(),
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    CustomField(
+                        maxLines: 3,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return StringsManger.not_empty.tr();
+                          }
+                          return null;
+                        },
+                        hint: args.description!,
+                        controller: descController,
+                        keyboard: TextInputType.multiline),
+                    Gap(16),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          AssetsManger.date_mark,
                           colorFilter: ColorFilter.mode(
                               Theme.of(context).colorScheme.secondary,
-                              BlendMode.srcIn)),
-                      Gap(8),
-                      Expanded(
-                        child: Text(
-                          StringsManger.event_time.tr(),
-                          style: Theme.of(context).textTheme.titleSmall,
+                              BlendMode.srcIn),
+                        ),
+                        Gap(8),
+                        Expanded(
+                          child: Text(
+                            StringsManger.event_date.tr(),
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: TextButton(
+                              onPressed: () {
+                                chooseEventDate();
+                              },
+                              child: Text(
+                                  selectedDate != null
+                                      ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                                      : DateFormat.yMd(
+                                              context.locale.languageCode)
+                                          .format(args.date!.toDate()),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        color: ColorManger.lightPrimary,
+                                      ))),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(AssetsManger.time_mark,
+                            colorFilter: ColorFilter.mode(
+                                Theme.of(context).colorScheme.secondary,
+                                BlendMode.srcIn)),
+                        Gap(8),
+                        Expanded(
+                          child: Text(
+                            StringsManger.event_time.tr(),
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: TextButton(
+                              onPressed: () {
+                                chooseEventTime();
+                              },
+                              child: Text(
+                                  selectedTime == null
+                                      ? DateFormat.Hm(context.locale.languageCode)
+                                          .format(args.date!.toDate())
+                                      : "${selectedTime!.hourOfPeriod}:${selectedTime!.minute}${selectedTime!.period.name}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(
+                                        color: ColorManger.lightPrimary,
+                                      ))),
+                        )
+                      ],
+                    ),
+                    Text(
+                      StringsManger.location.tr(),
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Gap(8),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, EventLocationScreen.routeName);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: ColorManger.lightPrimary)),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(AssetsManger.chooseLocation),
+                            Gap(8),
+                            Expanded(
+                              child: FutureBuilder<String?>(
+                                future: locationProvider.eventLocation != null
+                                    ? GetLocationName.getLocationName(
+                                        locationProvider.eventLocation!.latitude,
+                                        locationProvider.eventLocation!.longitude)
+                                    : GetLocationName.getLocationName(
+                                        eventMarker.position.latitude,
+                                        eventMarker.position.longitude),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Text(
+                                      "loading",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall
+                                          ?.copyWith(
+                                              color: ColorManger.lightPrimary),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text(
+                                      "error_loading_location",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall
+                                          ?.copyWith(
+                                              color: ColorManger.lightPrimary),
+                                    );
+                                  } else if (snapshot.hasData) {
+                                    return Text(
+                                      snapshot.data ??
+                                          StringsManger.choose_location.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall
+                                          ?.copyWith(
+                                              color: ColorManger.lightPrimary),
+                                    );
+                                  } else {
+                                    return Text(
+                                      StringsManger.choose_location.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall
+                                          ?.copyWith(
+                                              color: ColorManger.lightPrimary),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                            Align(
+                                alignment: AlignmentDirectional.centerEnd,
+                                child: Icon(
+                                  Icons.arrow_forward_ios_sharp,
+                                  color: ColorManger.lightPrimary,
+                                ))
+                          ],
                         ),
                       ),
-                      Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: TextButton(
-                            onPressed: () {
-                              chooseEventTime();
-                            },
-                            child: Text(
-                                selectedTime == null
-                                    ? DateFormat.Hm(context.locale.languageCode)
-                                        .format(args.date!.toDate())
-                                    : "${selectedTime!.hourOfPeriod}:${selectedTime!.minute}${selectedTime!.period.name}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(
-                                      color: ColorManger.lightPrimary,
-                                    ))),
-                      )
-                    ],
-                  ),
-                  Text(
-                    StringsManger.location.tr(),
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Gap(8),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, EventLocationScreen.routeName);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: ColorManger.lightPrimary)),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(AssetsManger.chooseLocation),
-                          Gap(8),
-                          Expanded(
-                            child: FutureBuilder<String?>(
-                              future: locationProvider.eventLocation != null
-                                  ? GetLocationName.getLocationName(
-                                      locationProvider.eventLocation!.latitude,
-                                      locationProvider.eventLocation!.longitude)
-                                  : GetLocationName.getLocationName(
-                                      eventMarker.position.latitude,
-                                      eventMarker.position.longitude),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Text(
-                                    "loading",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall
-                                        ?.copyWith(
-                                            color: ColorManger.lightPrimary),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Text(
-                                    "error_loading_location",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall
-                                        ?.copyWith(
-                                            color: ColorManger.lightPrimary),
-                                  );
-                                } else if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data ??
-                                        StringsManger.choose_location.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall
-                                        ?.copyWith(
-                                            color: ColorManger.lightPrimary),
-                                  );
-                                } else {
-                                  return Text(
-                                    StringsManger.choose_location.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall
-                                        ?.copyWith(
-                                            color: ColorManger.lightPrimary),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                          Align(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: Icon(
-                                Icons.arrow_forward_ios_sharp,
-                                color: ColorManger.lightPrimary,
-                              ))
-                        ],
-                      ),
                     ),
-                  ),
-                  Gap(8),
-                  Container(
-                    width: double.infinity,
-                    child: CustomButton(
-                        title: StringsManger.update_event.tr(),
-                        onPressed: () {
-                          updateEvent(args.id!);
-                        }),
-                  ),
-                ],
+                    Gap(8),
+                    Container(
+                      width: double.infinity,
+                      child: CustomButton(
+                          title: StringsManger.update_event.tr(),
+                          onPressed: () {
+                            updateEvent(args.id!);
+                          }),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -464,8 +472,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                   userId: FirebaseAuth.instance.currentUser!.uid,
                   category: getSelectedCategory(),
                   lat: locationProvider.eventLocation!.latitude,
-                  lng: locationProvider.eventLocation!.longitude),
-              id);
+                  lng: locationProvider.eventLocation!.longitude,id: id),
+              );
           Navigator.pop(context);
           DialogUtils.showToast("Event Updated success");
         } else {
@@ -486,6 +494,15 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
       return sportCategory;
     } else {
       return birthDayCategory;
+    }
+  }
+  int argsIndex(String category){
+    if(category==bookCategory){
+      return 0;
+    }else if(category==sportCategory){
+      return 1;
+    }else{
+      return 2;
     }
   }
 }

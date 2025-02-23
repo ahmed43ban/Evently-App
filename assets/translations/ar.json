@@ -69,5 +69,8 @@
   "no_events_yet": "لا توجد دعوات حتى الان",
   "event_details": "معلومات الحدث",
   "edit_event": " تعديل الحدث",
-  "update_event": "تحديث الحدث"
+  "update_event": "تحديث الحدث",
+  "confirm_log_out":"هل أنت متأكد أنك تريد تسجيل الخروج",
+  "confirm_delete_event": "هل أنت متأكد أنك تريد مسح هذا الحدث",
+  "cancel": "الغاء"
 }
