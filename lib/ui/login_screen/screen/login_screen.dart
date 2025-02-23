@@ -8,16 +8,16 @@ import 'package:evently/core/firebase_codes.dart';
 import 'package:evently/core/reusable_componenes/customButton.dart';
 import 'package:evently/core/reusable_componenes/customField.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/model/User.dart' as Myuser;
 import 'package:evently/ui/forgetPassword_screen/Screen/forgetPassword_screen.dart';
-import 'package:evently/ui/register_screen/screen/register_screen.dart';
 import 'package:evently/ui/home_screen/screen/home_screen.dart';
+import 'package:evently/ui/register_screen/screen/register_screen.dart';
 import 'package:evently/ui/start_screen/widget/language_toggle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:evently/model/User.dart' as Myuser;
 
 class LoginScreen extends StatefulWidget {
   static const String routName = "login";
@@ -63,29 +63,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   Image.asset(AssetsManger.logo2),
                   Gap(16),
                   CustomField(
-                      validator: (value){
-                        if(value==null ||value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           return StringsManger.not_empty.tr();
                         }
-                        if(!RegExp(emailRegex).hasMatch(value)){
+                        if (!RegExp(emailRegex).hasMatch(value)) {
                           return StringsManger.email_not_valid.tr();
                         }
                         return null;
                       },
-                      hint: StringsManger.email.tr(), prefix: AssetsManger.emailIcon,
-                      controller: emailController,keyboard: TextInputType.emailAddress),
+                      hint: StringsManger.email.tr(),
+                      prefix: AssetsManger.emailIcon,
+                      controller: emailController,
+                      keyboard: TextInputType.emailAddress),
                   Gap(8),
                   CustomField(
-                      validator: (value){
-                        if(value==null ||value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           return StringsManger.not_empty.tr();
                         }
-                        if(value.length<8){
+                        if (value.length < 8) {
                           return StringsManger.atlleast_eight.tr();
                         }
                         return null;
                       },
-                      isObscure:true,
+                      isObscure: true,
                       hint: StringsManger.password.tr(),
                       prefix: AssetsManger.passwordIcon,
                       controller: passwordController,
@@ -113,9 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     width: double.infinity,
                     child: CustomButton(
-                        title: StringsManger.login.tr(), onPressed: () {
+                        title: StringsManger.login.tr(),
+                        onPressed: () {
                           loginAccount();
-                    }),
+                        }),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .textTheme
                                 .bodySmall
                                 ?.copyWith(
-                                    color: Theme.of(context).colorScheme.primary),
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
                           ),
                         ),
                         Expanded(
@@ -174,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         signInWithGoogle();
                       },
                       style: ElevatedButton.styleFrom(
-                        elevation: 0,
+                          elevation: 0,
                           backgroundColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -207,47 +211,51 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-  loginAccount()async{
-    if(formKey.currentState!.validate()){
+
+  loginAccount() async {
+    if (formKey.currentState!.validate()) {
       try {
         DialogUtils.showLoadingDialog(context);
-        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text
-        );
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: emailController.text, password: passwordController.text);
         Navigator.pop(context);
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
         if (e.code == FirebaseAuthCodes.userNotFound) {
-          DialogUtils.showMessageDialog(context: context,
+          DialogUtils.showMessageDialog(
+              context: context,
               message: StringsManger.not_founded_mail.tr(),
               buttonTitle: StringsManger.ok.tr(),
-              positiveBtnClick: (){
+              positiveBtnClick: () {
                 Navigator.pop(context);
               });
         } else if (e.code == FirebaseAuthCodes.wrongPass) {
-          DialogUtils.showMessageDialog(context: context,
+          DialogUtils.showMessageDialog(
+              context: context,
               message: StringsManger.wrong_pass.tr(),
               buttonTitle: StringsManger.ok.tr(),
-              positiveBtnClick: (){
+              positiveBtnClick: () {
                 Navigator.pop(context);
               });
         }
       }
     }
   }
+
   Future<void> signInWithGoogle() async {
     DialogUtils.showLoadingDialog(context);
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     if (googleUser == null) {
-      Navigator.pop(context);  // Stop loading dialog if the user cancels sign-in
+      Navigator.pop(context); // Stop loading dialog if the user cancels sign-in
       return;
     }
 
     // Obtain the authentication details from the GoogleSignInAccount
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
     // Create a credential to use for Firebase authentication
     final credential = GoogleAuthProvider.credential(
@@ -259,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       var signed = await FirebaseAuth.instance.signInWithCredential(credential);
       var user = Myuser.User(
-        id: signed.user?.uid ,
+        id: signed.user?.uid,
         email: signed.user?.email,
         name: signed.user?.displayName,
         favorite: [],
@@ -279,10 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
           buttonTitle: StringsManger.ok.tr(),
           positiveBtnClick: () {
             Navigator.pop(context);
-          }
-      );
+          });
     }
   }
-
-
 }

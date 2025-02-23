@@ -54,7 +54,7 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     Event args = ModalRoute.of(context)?.settings.arguments as Event;
     locationProvider = Provider.of<LocationProvider>(context);
     locationProvider.getLocation();
@@ -63,9 +63,12 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
     // Creating a custom marker with a custom icon
     Marker eventMarker = Marker(
       markerId: MarkerId(args.id!),
-      position: LatLng(args.lat!, args.lng!), // Using the lat and lng args
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange), // Custom hue (color)
-      infoWindow: InfoWindow(title: args.title), // InfoWindow showing event title
+      position: LatLng(args.lat!, args.lng!),
+      // Using the lat and lng args
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+      // Custom hue (color)
+      infoWindow:
+          InfoWindow(title: args.title), // InfoWindow showing event title
     );
     locationProvider.markers.add(eventMarker);
     return Scaffold(
@@ -94,27 +97,27 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                           ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.asset(
-                                themeProvider.currentTheme==ThemeMode.dark
-                                    ?AssetsManger.book_club
-                                    :AssetsManger.book_club_light,
+                                themeProvider.currentTheme == ThemeMode.dark
+                                    ? AssetsManger.book_club
+                                    : AssetsManger.book_club_light,
                                 height: height * 0.2,
                                 fit: BoxFit.cover,
                               )),
                           ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.asset(
-                                themeProvider.currentTheme==ThemeMode.dark
-                                    ?AssetsManger.sportcard
-                                    :AssetsManger.sportcard,
+                                themeProvider.currentTheme == ThemeMode.dark
+                                    ? AssetsManger.sportcard
+                                    : AssetsManger.sportcard,
                                 height: height * 0.2,
                                 fit: BoxFit.cover,
                               )),
                           ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.asset(
-                                themeProvider.currentTheme==ThemeMode.dark
-                                    ?AssetsManger.birtday_dark
-                                    :AssetsManger.birthday,
+                                themeProvider.currentTheme == ThemeMode.dark
+                                    ? AssetsManger.birtday_dark
+                                    : AssetsManger.birthday,
                                 height: height * 0.2,
                                 fit: BoxFit.cover,
                               )),
@@ -276,8 +279,9 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                             child: Text(
                                 selectedDate != null
                                     ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                                    : DateFormat.yMd(context.locale.languageCode)
-                                    .format(args.date!.toDate()),
+                                    : DateFormat.yMd(
+                                            context.locale.languageCode)
+                                        .format(args.date!.toDate()),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
@@ -308,8 +312,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                             },
                             child: Text(
                                 selectedTime == null
-                                    ?DateFormat.Hm(context.locale.languageCode)
-                                    .format(args.date!.toDate())
+                                    ? DateFormat.Hm(context.locale.languageCode)
+                                        .format(args.date!.toDate())
                                     : "${selectedTime!.hourOfPeriod}:${selectedTime!.minute}${selectedTime!.period.name}",
                                 style: Theme.of(context)
                                     .textTheme
@@ -340,22 +344,24 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                           SvgPicture.asset(AssetsManger.chooseLocation),
                           Gap(8),
                           Expanded(
-                            child:FutureBuilder<String?>(
+                            child: FutureBuilder<String?>(
                               future: locationProvider.eventLocation != null
                                   ? GetLocationName.getLocationName(
-                                  locationProvider.eventLocation!.latitude,
-                                  locationProvider.eventLocation!.longitude)
+                                      locationProvider.eventLocation!.latitude,
+                                      locationProvider.eventLocation!.longitude)
                                   : GetLocationName.getLocationName(
-                                  eventMarker.position.latitude,
-                                  eventMarker.position.longitude),
+                                      eventMarker.position.latitude,
+                                      eventMarker.position.longitude),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return Text(
                                     "loading",
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall
-                                        ?.copyWith(color: ColorManger.lightPrimary),
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
                                   );
                                 } else if (snapshot.hasError) {
                                   return Text(
@@ -363,15 +369,18 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall
-                                        ?.copyWith(color: ColorManger.lightPrimary),
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
                                   );
                                 } else if (snapshot.hasData) {
                                   return Text(
-                                    snapshot.data ?? StringsManger.choose_location.tr(),
+                                    snapshot.data ??
+                                        StringsManger.choose_location.tr(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall
-                                        ?.copyWith(color: ColorManger.lightPrimary),
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
                                   );
                                 } else {
                                   return Text(
@@ -379,12 +388,12 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall
-                                        ?.copyWith(color: ColorManger.lightPrimary),
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
                                   );
                                 }
                               },
-                            )
-                            ,
+                            ),
                           ),
                           Align(
                               alignment: AlignmentDirectional.centerEnd,
@@ -447,14 +456,16 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
           DateTime eventDate = DateTime(selectedDate!.year, selectedDate!.month,
               selectedDate!.day, selectedTime!.hour, selectedTime!.minute);
           DialogUtils.showLoadingDialog(context);
-          await FireStoreHandler.updateEvent(Event(
-              title: titleController.text,
-              description: descController.text,
-              date: Timestamp.fromDate(eventDate),
-              userId: FirebaseAuth.instance.currentUser!.uid,
-              category: getSelectedCategory(),
-              lat: locationProvider.eventLocation!.latitude,
-              lng: locationProvider.eventLocation!.longitude),id);
+          await FireStoreHandler.updateEvent(
+              Event(
+                  title: titleController.text,
+                  description: descController.text,
+                  date: Timestamp.fromDate(eventDate),
+                  userId: FirebaseAuth.instance.currentUser!.uid,
+                  category: getSelectedCategory(),
+                  lat: locationProvider.eventLocation!.latitude,
+                  lng: locationProvider.eventLocation!.longitude),
+              id);
           Navigator.pop(context);
           DialogUtils.showToast("Event Updated success");
         } else {
