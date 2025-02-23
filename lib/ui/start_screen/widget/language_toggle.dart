@@ -12,35 +12,22 @@ class LanguageToggle extends StatefulWidget {
 }
 
 class _LanguageToggleState extends State<LanguageToggle> {
-  int currentValue =0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-      setState(() {
-        currentValue=(context.locale.languageCode == 'ar')?1:0;
-      });
-    });
-  }
+  int currentValue = 0;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedToggleSwitch<int>.rolling(
-      current: currentValue,
+      current: currentValue = (context.locale.languageCode == 'ar') ? 1 : 0,
       values: [0, 1],
       onChanged: (newValue) {
-        if(currentValue !=newValue){
-          setState(() {
-            currentValue = newValue;
-            if (currentValue == 0) {
-              context.setLocale(Locale("en"));
-            } else {
-              context.setLocale(Locale("ar"));
-            }
-          });
-        }
+        setState(() {
+          currentValue = newValue;
+          if (currentValue == 0) {
+            context.setLocale(Locale("en"));
+          } else {
+            context.setLocale(Locale("ar"));
+          }
+        });
       },
       iconOpacity: 1,
       style: ToggleStyle(
