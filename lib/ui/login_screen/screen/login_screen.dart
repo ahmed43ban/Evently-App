@@ -245,25 +245,36 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> signInWithGoogle() async {
+    // Check if the user is already signed in
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // If user is already signed in, navigate to the home screen
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      return;
+    }
+
     DialogUtils.showLoadingDialog(context);
-    // Trigger the authentication flow
+
+    // Trigger the Google authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
     if (googleUser == null) {
-      Navigator.pop(context); // Stop loading dialog if the user cancels sign-in
+      Navigator.pop(context); // Stop loading dialog if user cancels sign-in
       return;
     }
 
     // Obtain the authentication details from the GoogleSignInAccount
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
     // Create a credential to use for Firebase authentication
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    // Try to sign in with the credential
+
     try {
+      // Sign in with the credential
       var signed = await FirebaseAuth.instance.signInWithCredential(credential);
       var user = Myuser.User(
         id: signed.user!.uid,
@@ -271,7 +282,9 @@ class _LoginScreenState extends State<LoginScreen> {
         name: signed.user!.displayName,
         favorite: [],
       );
-      Navigator.pop(context);
+
+      Navigator.pop(context); // Stop loading dialog
+
       // Save user info to Firestore (if required)
       FireStoreHandler.AddUser(user);
 
@@ -286,7 +299,9 @@ class _LoginScreenState extends State<LoginScreen> {
           buttonTitle: StringsManger.ok.tr(),
           positiveBtnClick: () {
             Navigator.pop(context);
-          });
+          }
+      );
     }
   }
+
 }
