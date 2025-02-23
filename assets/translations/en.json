@@ -67,5 +67,7 @@
   "const_month": "Nov",
   "tap_to_select": "Tap on Location To Select",
   "no_events_yet": "No Events Yet",
-  "event_details": "Event Details"
+  "event_details": "Event Details",
+  "edit_event": "Edit Event",
+  "update_event": "Update Event"
 }

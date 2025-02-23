@@ -6,6 +6,7 @@ import 'package:evently/core/constants.dart';
 import 'package:evently/core/fireStoreHandler.dart';
 import 'package:evently/model/Event.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/event_details/screen/event_details_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,9 @@ class _EventItemState extends State<EventItem> {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider=Provider.of<UserProvider>(context);
     double height = MediaQuery.of(context).size.height;
+    List<String>userFavoriteIds=userProvider.user?.favorite??[];
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, EventDetailsScreen.routeName,
@@ -83,26 +86,38 @@ class _EventItemState extends State<EventItem> {
                     )),
                     InkWell(
                       onTap: () async {
-                        if (widget.event.isWishList ?? false) {
-                          DialogUtils.showLoadingDialog(context);
+
+                        if (userFavoriteIds.contains(widget.event.id)) {
+                          // Remove from favorites
+                          userProvider.user?.favorite?.remove(widget.event.id ?? "");
                           await FireStoreHandler.removeFromFavorite(
                               FirebaseAuth.instance.currentUser!.uid,
                               widget.event.id!);
-                          widget.event.isWishList = false;
-                          setState(() {});
-                          Navigator.pop(context);
                         } else {
-                          DialogUtils.showLoadingDialog(context);
+                          // Add to favorites
+                          userProvider.user?.favorite?.add(widget.event.id ?? "");
                           await FireStoreHandler.addToFavorite(
                               FirebaseAuth.instance.currentUser!.uid,
                               widget.event);
-                          widget.event.isWishList = true;
+                        }
+
+                        // Update user favorites in Firestore
+                        await FireStoreHandler.updateUserFavorite(
+                            FirebaseAuth.instance.currentUser!.uid,
+                            userProvider.user?.favorite ?? []);
+
+                        // Ensure widget is still mounted before calling setState
+                        if (mounted) {
                           setState(() {});
+                        }
+
+                        // Ensure context is valid before popping
+                        if (mounted && Navigator.of(context).canPop()) {
                           Navigator.pop(context);
                         }
                       },
                       child: SvgPicture.asset(
-                        widget.event.isWishList!
+                        userFavoriteIds.contains(widget.event.id)
                             ? AssetsManger.loveSelected
                             : AssetsManger.loveUnSelected,
                         height: 24,

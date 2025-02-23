@@ -12,8 +12,8 @@ class AllEvents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FireStoreHandler.getAllEvents(),
+    return StreamBuilder(
+      stream: FireStoreHandler.getAllEventStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(

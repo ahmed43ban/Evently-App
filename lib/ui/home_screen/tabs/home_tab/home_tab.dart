@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
+import 'package:evently/core/get_location_name.dart';
 import 'package:evently/core/strings-manger.dart';
+import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/home_screen/tabs/home_tab/widgets/all_events.dart';
@@ -19,9 +21,14 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int selectedIndex = 0;
+  @override
+  
+  @override
+  
 
   @override
   Widget build(BuildContext context) {
+    LocationProvider locationProvider = Provider.of<LocationProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return DefaultTabController(
@@ -116,13 +123,11 @@ class _HomeTabState extends State<HomeTab> {
                 Row(
                   children: [
                     SvgPicture.asset(AssetsManger.MapUnSelected),
-                    Text(
-                      StringsManger.const_location.tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium
-                          ?.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
-                    )
+                    Gap(8),
+                    Text(StringsManger.const_location.tr(),style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium?.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.w400),)
                   ],
                 ),
                 TabBar(

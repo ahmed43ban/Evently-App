@@ -13,8 +13,8 @@ class BookEvents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FireStoreHandler.getCategoryEvents(bookCategory),
+    return StreamBuilder(
+      stream: FireStoreHandler.getEventCategoryStream(bookCategory),
       builder: (context, snapshot) {
         if(snapshot.connectionState==ConnectionState.waiting){
           return Center(child: CircularProgressIndicator(),);

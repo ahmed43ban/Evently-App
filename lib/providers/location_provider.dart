@@ -82,4 +82,5 @@ class LocationProvider extends ChangeNotifier{
     eventLocation = newEventLocation;
     notifyListeners();
   }
+
 }

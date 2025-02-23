@@ -7,10 +7,9 @@ class Event{
   Timestamp? date;
   double? lat;
   double? lng;
-  bool? isWishList;
   String? userId;
   String? id;
-  Event({this.id,this.userId,this.title,this.description,this.category,this.date,this.lat,this.lng,this.isWishList});
+  Event({this.id,this.userId,this.title,this.description,this.category,this.date,this.lat,this.lng,});
   Event.fromFireStore(Map<String,dynamic>?data){
     title=data?["title"];
     description=data?["description"];
@@ -18,7 +17,6 @@ class Event{
     date=data?["date"];
     lat=data?["lat"];
     lng=data?["lng"];
-    isWishList=data?["isWishList"];
     userId=data?["userId"];
     id=data?["id"];
   }
@@ -31,7 +29,6 @@ class Event{
       "date":date,
       "lat":lat,
       "lng":lng,
-      "isWishList":isWishList,
       "userId":userId,
       "id":id
     };

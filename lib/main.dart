@@ -14,6 +14,7 @@ import 'package:evently/ui/login_screen/screen/login_screen.dart';
 import 'package:evently/ui/onboarding/screen/onBoarding_screen.dart';
 import 'package:evently/ui/register_screen/screen/register_screen.dart';
 import 'package:evently/ui/start_screen/screen/start_screen.dart';
+import 'package:evently/ui/update_event/screen/update_event_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,8 @@ class MyApp extends StatelessWidget {
             ),
         EventLocationScreen.routeName: (_) => EventLocationScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
-        EventDetailsScreen.routeName: (_) => EventDetailsScreen()
+        EventDetailsScreen.routeName: (_) => EventDetailsScreen(),
+        UpdateEventScreen.routeName: (_)=>UpdateEventScreen()
       },
       initialRoute: PrefHelper.getOnboarding()
           ? FirebaseAuth.instance.currentUser == null
