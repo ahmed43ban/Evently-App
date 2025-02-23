@@ -1,12 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
+import 'package:evently/core/fireStoreHandler.dart';
 import 'package:evently/core/get_location_name.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/model/Event.dart';
 import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
+import 'package:evently/ui/home_screen/screen/home_screen.dart';
 import 'package:evently/ui/update_event/screen/update_event_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +89,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    deleteEventDialog(args);
+                  },
                   child: SvgPicture.asset(AssetsManger.delete_tool)),
             ),
           ]
@@ -247,5 +252,25 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       }
       return AssetsManger.book_club;
     }
+  }
+  deleteEvent(Event event){
+    DialogUtils.showLoadingDialog(context);
+    FireStoreHandler.deleteEvent(event);
+    Navigator.pop(context);
+    DialogUtils.showToast("Event deleted");
+    Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route) => false,);
+  }
+  deleteEventDialog(Event event){
+    DialogUtils.showMessageDialog(
+        context: context,
+        message: StringsManger.confirm_delete_event.tr(),
+        buttonTitle2: StringsManger.cancel.tr(),
+        positiveBtnClick2: (){
+          Navigator.pop(context);
+        },
+        buttonTitle: StringsManger.ok.tr(),
+        positiveBtnClick: (){
+          deleteEvent(event);
+        });
   }
 }

@@ -72,4 +72,7 @@ abstract class StringsManger {
   static const String event_details="event_details";
   static const String edit_event="edit_event";
   static const String update_event="update_event";
+  static const String confirm_log_out="confirm_log_out";
+  static const String cancel="cancel";
+  static const String confirm_delete_event="confirm_delete_event";
 }
