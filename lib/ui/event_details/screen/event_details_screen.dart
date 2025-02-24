@@ -18,7 +18,6 @@ import 'package:gap/gap.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-
 class EventDetailsScreen extends StatefulWidget {
   static const String routeName = "Event Details";
 
@@ -26,7 +25,6 @@ class EventDetailsScreen extends StatefulWidget {
 
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
-
 }
 
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
@@ -49,7 +47,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   void initState() {
     super.initState();
     themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
   }
 
   @override
@@ -62,12 +59,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     // Creating a custom marker with a custom icon
     Marker eventMarker = Marker(
       markerId: MarkerId(args.id!),
-      position: LatLng(args.lat!, args.lng!), // Using the lat and lng args
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange), // Custom hue (color)
-      infoWindow: InfoWindow(title: args.title), // InfoWindow showing event title
+      position: LatLng(args.lat!, args.lng!),
+      // Using the lat and lng args
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+      // Custom hue (color)
+      infoWindow:
+          InfoWindow(title: args.title), // InfoWindow showing event title
     );
 
-    locationProvider.markers.add(eventMarker); // Add the marker to the provider's list
+    locationProvider.markers
+        .add(eventMarker); // Add the marker to the provider's list
 
     return Scaffold(
         appBar: AppBar(
@@ -78,30 +79,32 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           ),
           actions: args.userId == FirebaseAuth.instance.currentUser!.uid
               ? [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, UpdateEventScreen.routeName,arguments: args);
-                  },
-                  child: SvgPicture.asset(AssetsManger.edit_tool)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: InkWell(
-                  onTap: () {
-                    deleteEventDialog(args);
-                  },
-                  child: SvgPicture.asset(AssetsManger.delete_tool)),
-            ),
-          ]
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, UpdateEventScreen.routeName,
+                              arguments: args);
+                        },
+                        child: SvgPicture.asset(AssetsManger.edit_tool)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: InkWell(
+                        onTap: () {
+                          deleteEventDialog(args);
+                        },
+                        child: SvgPicture.asset(AssetsManger.delete_tool)),
+                  ),
+                ]
               : [],
         ),
         body: Padding(
           padding: EdgeInsets.all(16),
           child: SingleChildScrollView(
             child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 width: double.infinity,
                 height: height * 0.2,
@@ -149,9 +152,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 .textTheme
                                 .titleMedium
                                 ?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                           ),
                         ],
                       ),
@@ -170,25 +173,31 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     SvgPicture.asset(AssetsManger.chooseLocation),
                     Gap(8),
                     Expanded(
-                        child:  FutureBuilder<String?>(
-                          future: locationFuture, // Fetch location name
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator(); // Show loading spinner
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}'); // Handle error
-                            } else if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data!,
-                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: ColorManger.lightPrimary,
-                                ),
-                              );
-                            } else {
-                              return Text('No location found'); // Fallback message
-                            }
-                          },
-                        ),
+                      child: FutureBuilder<String?>(
+                        future: locationFuture, // Fetch location name
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator(); // Show loading spinner
+                          } else if (snapshot.hasError) {
+                            return Text(
+                                'Error: ${snapshot.error}'); // Handle error
+                          } else if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(
+                                    color: ColorManger.lightPrimary,
+                                  ),
+                            );
+                          } else {
+                            return Text(
+                                'No location found'); // Fallback message
+                          }
+                        },
+                      ),
                     ),
                     Align(
                         alignment: AlignmentDirectional.centerEnd,
@@ -253,23 +262,29 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       return AssetsManger.book_club;
     }
   }
-  deleteEvent(Event event){
+
+  deleteEvent(Event event) {
     DialogUtils.showLoadingDialog(context);
     FireStoreHandler.deleteEvent(event);
     Navigator.pop(context);
     DialogUtils.showToast("Event deleted");
-    Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route) => false,);
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      HomeScreen.routeName,
+      (route) => false,
+    );
   }
-  deleteEventDialog(Event event){
+
+  deleteEventDialog(Event event) {
     DialogUtils.showMessageDialog(
         context: context,
         message: StringsManger.confirm_delete_event.tr(),
         buttonTitle2: StringsManger.cancel.tr(),
-        positiveBtnClick2: (){
+        positiveBtnClick2: () {
           Navigator.pop(context);
         },
         buttonTitle: StringsManger.ok.tr(),
-        positiveBtnClick: (){
+        positiveBtnClick: () {
           deleteEvent(event);
         });
   }

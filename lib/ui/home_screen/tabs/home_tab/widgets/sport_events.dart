@@ -16,24 +16,30 @@ class SportEvents extends StatelessWidget {
     return StreamBuilder(
       stream: FireStoreHandler.getEventCategoryStream(sportCategory),
       builder: (context, snapshot) {
-        if(snapshot.connectionState==ConnectionState.waiting){
-          return Center(child: CircularProgressIndicator(),);
-        }else if(snapshot.hasError){
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
           return DialogUtils.showMessageDialog(
-              context: context, message: snapshot.error!.toString(),
+              context: context,
+              message: snapshot.error!.toString(),
               buttonTitle: StringsManger.ok.tr(),
-              positiveBtnClick: (){
+              positiveBtnClick: () {
                 Navigator.pop(context);
               });
-        }else{
-          List<Event> events=snapshot.data??[];
+        } else {
+          List<Event> events = snapshot.data ?? [];
           return events.isEmpty
-              ?Text(StringsManger.no_events_yet.tr())
-              :ListView.separated(
-              itemBuilder: (context, index) => EventItem(event: events[index],),
-              separatorBuilder: (context, index) => Gap(16),
-              itemCount: events.length);
+              ? Text(StringsManger.no_events_yet.tr())
+              : ListView.separated(
+                  itemBuilder: (context, index) => EventItem(
+                        event: events[index],
+                      ),
+                  separatorBuilder: (context, index) => Gap(16),
+                  itemCount: events.length);
         }
-      },);
+      },
+    );
   }
 }

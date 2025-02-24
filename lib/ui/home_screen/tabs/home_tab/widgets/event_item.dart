@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:evently/core/DialogUtils.dart';
 import 'package:evently/core/assets-manger.dart';
 import 'package:evently/core/color-manger.dart';
 import 'package:evently/core/constants.dart';
@@ -32,9 +31,9 @@ class _EventItemState extends State<EventItem> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider userProvider=Provider.of<UserProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     double height = MediaQuery.of(context).size.height;
-    List<String>userFavoriteIds=userProvider.user?.favorite??[];
+    List<String> userFavoriteIds = userProvider.user?.favorite ?? [];
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, EventDetailsScreen.routeName,
@@ -86,16 +85,17 @@ class _EventItemState extends State<EventItem> {
                     )),
                     InkWell(
                       onTap: () async {
-
                         if (userFavoriteIds.contains(widget.event.id)) {
                           // Remove from favorites
-                          userProvider.user?.favorite?.remove(widget.event.id ?? "");
+                          userProvider.user?.favorite
+                              ?.remove(widget.event.id ?? "");
                           await FireStoreHandler.removeFromFavorite(
                               FirebaseAuth.instance.currentUser!.uid,
                               widget.event.id!);
                         } else {
                           // Add to favorites
-                          userProvider.user?.favorite?.add(widget.event.id ?? "");
+                          userProvider.user?.favorite
+                              ?.add(widget.event.id ?? "");
                           await FireStoreHandler.addToFavorite(
                               FirebaseAuth.instance.currentUser!.uid,
                               widget.event);
@@ -109,11 +109,6 @@ class _EventItemState extends State<EventItem> {
                         // Ensure widget is still mounted before calling setState
                         if (mounted) {
                           setState(() {});
-                        }
-
-                        // Ensure context is valid before popping
-                        if (mounted && Navigator.of(context).canPop()) {
-                          Navigator.pop(context);
                         }
                       },
                       child: SvgPicture.asset(

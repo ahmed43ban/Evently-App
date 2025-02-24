@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         EventLocationScreen.routeName: (_) => EventLocationScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
         EventDetailsScreen.routeName: (_) => EventDetailsScreen(),
-        UpdateEventScreen.routeName: (_)=>UpdateEventScreen()
+        UpdateEventScreen.routeName: (_) => UpdateEventScreen()
       },
       initialRoute: PrefHelper.getOnboarding()
           ? FirebaseAuth.instance.currentUser == null

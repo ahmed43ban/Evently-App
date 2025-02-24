@@ -53,7 +53,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider=Provider.of<ThemeProvider>(context);
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     locationProvider = Provider.of<LocationProvider>(context);
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -72,7 +72,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             padding: EdgeInsets.all(16),
             child: SingleChildScrollView(
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   FocusScope.of(context).unfocus();
                 },
                 child: Column(
@@ -86,27 +86,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
                                 child: Image.asset(
-                                  themeProvider.currentTheme==ThemeMode.dark
-                                      ?AssetsManger.book_club
-                                  :AssetsManger.book_club_light,
+                                  themeProvider.currentTheme == ThemeMode.dark
+                                      ? AssetsManger.book_club
+                                      : AssetsManger.book_club_light,
                                   height: height * 0.2,
                                   fit: BoxFit.cover,
                                 )),
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
                                 child: Image.asset(
-                                  themeProvider.currentTheme==ThemeMode.dark
-                                      ?AssetsManger.sportcard
-                                      :AssetsManger.sportcard,
+                                  themeProvider.currentTheme == ThemeMode.dark
+                                      ? AssetsManger.sportcard
+                                      : AssetsManger.sportcard,
                                   height: height * 0.2,
                                   fit: BoxFit.cover,
                                 )),
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
                                 child: Image.asset(
-                                  themeProvider.currentTheme==ThemeMode.dark
-                                      ?AssetsManger.birtday_dark
-                                      :AssetsManger.birthday,
+                                  themeProvider.currentTheme == ThemeMode.dark
+                                      ? AssetsManger.birtday_dark
+                                      : AssetsManger.birthday,
                                   height: height * 0.2,
                                   fit: BoxFit.cover,
                                 )),
@@ -131,8 +131,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           Tab(
                             child: Container(
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorManger.lightPrimary),
+                                  border: Border.all(
+                                      color: ColorManger.lightPrimary),
                                   borderRadius: BorderRadius.circular(46)),
                               padding: EdgeInsets.all(10),
                               child: Row(
@@ -159,8 +159,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             child: Container(
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorManger.lightPrimary),
+                                  border: Border.all(
+                                      color: ColorManger.lightPrimary),
                                   borderRadius: BorderRadius.circular(46)),
                               child: Row(
                                 children: [
@@ -185,8 +185,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           Tab(
                             child: Container(
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorManger.lightPrimary),
+                                  border: Border.all(
+                                      color: ColorManger.lightPrimary),
                                   borderRadius: BorderRadius.circular(46)),
                               padding: EdgeInsets.all(10),
                               child: Row(
@@ -324,56 +324,62 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: ColorManger.lightPrimary)),
+                            border:
+                                Border.all(color: ColorManger.lightPrimary)),
                         child: Row(
                           children: [
                             SvgPicture.asset(AssetsManger.chooseLocation),
                             Gap(8),
                             Expanded(
-                              child:FutureBuilder<String?>(
-                                // Get the location name asynchronously
-                                future: locationProvider.eventLocation != null
-                                    ? GetLocationName.getLocationName(
-                                    locationProvider.eventLocation!.latitude,
-                                    locationProvider.eventLocation!.longitude)
-                                    : Future.value(null),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return Text(
-                                      "loading",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall
-                                          ?.copyWith(color: ColorManger.lightPrimary),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text(
-                                      "error_loading_location",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall
-                                          ?.copyWith(color: ColorManger.lightPrimary),
-                                    );
-                                  } else if (snapshot.hasData) {
-                                    return Text(
-                                      snapshot.data ?? StringsManger.choose_location.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall
-                                          ?.copyWith(color: ColorManger.lightPrimary),
-                                    );
-                                  } else {
-                                    return Text(
-                                      StringsManger.choose_location.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall
-                                          ?.copyWith(color: ColorManger.lightPrimary),
-                                    );
-                                  }
-                                },
-                              )
-                            ),
+                                child: FutureBuilder<String?>(
+                              // Get the location name asynchronously
+                              future: locationProvider.eventLocation != null
+                                  ? GetLocationName.getLocationName(
+                                      locationProvider.eventLocation!.latitude,
+                                      locationProvider.eventLocation!.longitude)
+                                  : Future.value(null),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Text(
+                                    "loading",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    "error_loading_location",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
+                                  );
+                                } else if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data ??
+                                        StringsManger.choose_location.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
+                                  );
+                                } else {
+                                  return Text(
+                                    StringsManger.choose_location.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.copyWith(
+                                            color: ColorManger.lightPrimary),
+                                  );
+                                }
+                              },
+                            )),
                             Align(
                                 alignment: AlignmentDirectional.centerEnd,
                                 child: Icon(

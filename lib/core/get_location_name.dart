@@ -1,6 +1,4 @@
 import 'package:geocoding/geocoding.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 class GetLocationName {
   static Future<String?> getLocationName(double lat, double lng) async {
@@ -9,7 +7,8 @@ class GetLocationName {
 
       if (placemarks.isNotEmpty) {
         String? locationName;
-        return locationName = '${placemarks[0].locality}, ${placemarks[0].country}';
+        return locationName =
+            '${placemarks[0].locality}, ${placemarks[0].country}';
       } else {
         return null; // If no placemarks found
       }
@@ -18,5 +17,4 @@ class GetLocationName {
       throw Exception("Error getting location name: $e");
     }
   }
-
 }
