@@ -184,19 +184,19 @@ class ProfileTab extends StatelessWidget {
       ],
     );
   }
-  logOutDialog(context){
+
+  logOutDialog(context) {
     DialogUtils.showMessageDialog(
         context: context,
         message: StringsManger.confirm_log_out.tr(),
         buttonTitle2: StringsManger.cancel.tr(),
-        positiveBtnClick2: (){
+        positiveBtnClick2: () {
           Navigator.pop(context);
         },
         buttonTitle: StringsManger.ok.tr(),
-        positiveBtnClick: (){
+        positiveBtnClick: () {
           FirebaseAuth.instance.signOut();
-          Navigator.pushReplacementNamed(
-              context, LoginScreen.routName);
+          Navigator.pushReplacementNamed(context, LoginScreen.routName);
         });
   }
 }

@@ -90,7 +90,7 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
             padding: EdgeInsets.all(16),
             child: SingleChildScrollView(
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   FocusScope.of(context).unfocus();
                 },
                 child: Column(
@@ -149,8 +149,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                           Tab(
                             child: Container(
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorManger.lightPrimary),
+                                  border: Border.all(
+                                      color: ColorManger.lightPrimary),
                                   borderRadius: BorderRadius.circular(46)),
                               padding: EdgeInsets.all(10),
                               child: Row(
@@ -177,8 +177,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                             child: Container(
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorManger.lightPrimary),
+                                  border: Border.all(
+                                      color: ColorManger.lightPrimary),
                                   borderRadius: BorderRadius.circular(46)),
                               child: Row(
                                 children: [
@@ -203,8 +203,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                           Tab(
                             child: Container(
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: ColorManger.lightPrimary),
+                                  border: Border.all(
+                                      color: ColorManger.lightPrimary),
                                   borderRadius: BorderRadius.circular(46)),
                               padding: EdgeInsets.all(10),
                               child: Row(
@@ -319,7 +319,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                               },
                               child: Text(
                                   selectedTime == null
-                                      ? DateFormat.Hm(context.locale.languageCode)
+                                      ? DateFormat.Hm(
+                                              context.locale.languageCode)
                                           .format(args.date!.toDate())
                                       : "${selectedTime!.hourOfPeriod}:${selectedTime!.minute}${selectedTime!.period.name}",
                                   style: Theme.of(context)
@@ -345,7 +346,8 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: ColorManger.lightPrimary)),
+                            border:
+                                Border.all(color: ColorManger.lightPrimary)),
                         child: Row(
                           children: [
                             SvgPicture.asset(AssetsManger.chooseLocation),
@@ -354,8 +356,10 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
                               child: FutureBuilder<String?>(
                                 future: locationProvider.eventLocation != null
                                     ? GetLocationName.getLocationName(
-                                        locationProvider.eventLocation!.latitude,
-                                        locationProvider.eventLocation!.longitude)
+                                        locationProvider
+                                            .eventLocation!.latitude,
+                                        locationProvider
+                                            .eventLocation!.longitude)
                                     : GetLocationName.getLocationName(
                                         eventMarker.position.latitude,
                                         eventMarker.position.longitude),
@@ -465,15 +469,16 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
               selectedDate!.day, selectedTime!.hour, selectedTime!.minute);
           DialogUtils.showLoadingDialog(context);
           await FireStoreHandler.updateEvent(
-              Event(
-                  title: titleController.text,
-                  description: descController.text,
-                  date: Timestamp.fromDate(eventDate),
-                  userId: FirebaseAuth.instance.currentUser!.uid,
-                  category: getSelectedCategory(),
-                  lat: locationProvider.eventLocation!.latitude,
-                  lng: locationProvider.eventLocation!.longitude,id: id),
-              );
+            Event(
+                title: titleController.text,
+                description: descController.text,
+                date: Timestamp.fromDate(eventDate),
+                userId: FirebaseAuth.instance.currentUser!.uid,
+                category: getSelectedCategory(),
+                lat: locationProvider.eventLocation!.latitude,
+                lng: locationProvider.eventLocation!.longitude,
+                id: id),
+          );
           Navigator.pop(context);
           DialogUtils.showToast("Event Updated success");
         } else {
@@ -496,12 +501,13 @@ class _UpdateEventScreenState extends State<UpdateEventScreen> {
       return birthDayCategory;
     }
   }
-  int argsIndex(String category){
-    if(category==bookCategory){
+
+  int argsIndex(String category) {
+    if (category == bookCategory) {
       return 0;
-    }else if(category==sportCategory){
+    } else if (category == sportCategory) {
       return 1;
-    }else{
+    } else {
       return 2;
     }
   }

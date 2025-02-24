@@ -21,6 +21,7 @@ class PrefHelper {
   static setTheme(bool value) {
     prefs.setBool("theme", value);
   }
+
   static setOnboarding(bool value) {
     prefs.setBool("showed", value);
   }
@@ -28,6 +29,7 @@ class PrefHelper {
   static bool getTheme() {
     return prefs.getBool("theme") ?? false;
   }
+
   static bool getOnboarding() {
     return prefs.getBool("showed") ?? false;
   }
