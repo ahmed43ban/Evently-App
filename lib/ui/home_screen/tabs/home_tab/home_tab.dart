@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/assets-manger.dart';
-import 'package:evently/core/get_location_name.dart';
 import 'package:evently/core/strings-manger.dart';
 import 'package:evently/providers/location_provider.dart';
 import 'package:evently/providers/theme_provider.dart';
@@ -21,11 +20,9 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int selectedIndex = 0;
-  @override
-  
-  @override
-  
 
+  @override
+  @override
   @override
   Widget build(BuildContext context) {
     LocationProvider locationProvider = Provider.of<LocationProvider>(context);
@@ -124,10 +121,13 @@ class _HomeTabState extends State<HomeTab> {
                   children: [
                     SvgPicture.asset(AssetsManger.MapUnSelected),
                     Gap(8),
-                    Text(StringsManger.const_location.tr(),style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium?.copyWith(
-                        fontSize: 14, fontWeight: FontWeight.w400),)
+                    Text(
+                      StringsManger.const_location.tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                    )
                   ],
                 ),
                 TabBar(

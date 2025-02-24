@@ -265,7 +265,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     // Obtain the authentication details from the GoogleSignInAccount
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
     // Create a credential to use for Firebase authentication
     final credential = GoogleAuthProvider.credential(
@@ -299,9 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
           buttonTitle: StringsManger.ok.tr(),
           positiveBtnClick: () {
             Navigator.pop(context);
-          }
-      );
+          });
     }
   }
-
 }
