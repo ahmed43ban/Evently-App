@@ -245,18 +245,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> signInWithGoogle() async {
-    // Check if the user is already signed in
-    User? user = FirebaseAuth.instance.currentUser;
+    /*User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       // If user is already signed in, navigate to the home screen
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       return;
-    }
+    }*/
 
     DialogUtils.showLoadingDialog(context);
 
-    // Trigger the Google authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     if (googleUser == null) {
@@ -277,11 +275,13 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Sign in with the credential
       var signed = await FirebaseAuth.instance.signInWithCredential(credential);
+      var list =await FireStoreHandler.getLoveEvents(signed.user!.uid);
+      var   idOfEvent=list.map((e) =>e.id! ,).toList();;
       var user = Myuser.User(
         id: signed.user!.uid,
         email: signed.user!.email,
         name: signed.user!.displayName,
-        favorite: [],
+        favorite: idOfEvent !=null?idOfEvent:[],
       );
 
       Navigator.pop(context); // Stop loading dialog
@@ -303,4 +303,5 @@ class _LoginScreenState extends State<LoginScreen> {
           });
     }
   }
+
 }
