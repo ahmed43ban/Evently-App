@@ -266,6 +266,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   deleteEvent(Event event) {
     DialogUtils.showLoadingDialog(context);
     FireStoreHandler.deleteEvent(event);
+    FireStoreHandler.removeFromFavorite(FirebaseAuth.instance.currentUser!.uid, event.id!);
     Navigator.pop(context);
     DialogUtils.showToast("Event deleted");
     Navigator.pushNamedAndRemoveUntil(
