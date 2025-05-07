@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart'as myGeo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -17,6 +18,7 @@ class LocationProvider extends ChangeNotifier {
     )
   };
   LatLng? eventLocation;
+  List<Map<String, dynamic>> streetCoordinates = [];
 
   Future<void> getLocation() async {
     locationMsg = "Checking Location Service";
@@ -79,4 +81,64 @@ class LocationProvider extends ChangeNotifier {
     eventLocation = newEventLocation;
     notifyListeners();
   }
+  Future<void> getCoordinatesFromStreetName(String streetName) async {
+    try {
+      List<myGeo.Location> locations = await myGeo.locationFromAddress(streetName);
+      if (locations.isNotEmpty) {
+        double latitude = locations[0].latitude;
+        double longitude = locations[0].longitude;
+
+        // Add coordinates to the list
+        streetCoordinates.add({
+          'street': streetName,
+          'latitude': latitude,
+          'longitude': longitude
+        });
+
+        // Add marker on the map
+        markers.add(
+          Marker(
+            markerId: MarkerId(streetName),
+            position: LatLng(latitude, longitude),
+            infoWindow: InfoWindow(title: streetName),
+          ),
+        );
+
+        // Print all coordinates to the console once the street is added
+        print("All Coordinates: $streetCoordinates");
+
+        // Notify listeners to update UI (map)
+        notifyListeners();
+      }
+    } catch (e) {
+      print("Error getting coordinates for $streetName: $e");
+    }
+  }
+  /*Future<void> getCoordinatesFromStreetName(String streetName) async {
+    try {
+      // استخدام geocoding لتحويل اسم الشارع إلى إحداثيات
+      List<myGeo.Location> locations = await myGeo.locationFromAddress(streetName);
+      if (locations.isNotEmpty) {
+        LatLng newLocation = LatLng(locations[0].latitude, locations[0].longitude);
+
+        // إضافة الماركر على الخريطة
+        markers.add(
+          Marker(
+            markerId: MarkerId("streetMarker"),
+            position: newLocation,
+            infoWindow: InfoWindow(title: streetName),
+          ),
+        );
+
+        // تغيير مكان الكاميرا على الخريطة
+        cameraPosition = CameraPosition(target: newLocation, zoom: 15.0);
+        mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        print("Coordinates for $streetName: ${newLocation.latitude}, ${newLocation.longitude}");
+
+        notifyListeners();
+      }
+    } catch (e) {
+      print("Error getting coordinates: $e");
+    }
+  }*/
 }

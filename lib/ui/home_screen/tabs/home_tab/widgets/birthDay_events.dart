@@ -31,7 +31,7 @@ class BirthDayEvents extends StatelessWidget {
         } else {
           List<Event> events = snapshot.data ?? [];
           return events.isEmpty
-              ? Text(StringsManger.no_events_yet.tr())
+              ? Center(child: Text(StringsManger.no_events_yet.tr()))
               : ListView.separated(
                   itemBuilder: (context, index) => EventItem(
                         event: events[index],

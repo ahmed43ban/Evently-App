@@ -20,9 +20,23 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int selectedIndex = 0;
-
+  /*late LocationProvider locationProvider;
+  List<String> streets = [
+    "ابومرقيق, ك 35, عزبة عيسى, مرسى مطروح",
+    "شارع الشاطئ, خلف استراحة النقل والمواصلات, مرسى مطروح",
+    "شارع الذاعة, امام السجل المدني, ك 4, منزل جمال فؤاد, مرسى مطروح",
+    "وادى الرمل, ك 5, طريق السلوم, مرسى مطروح",
+    "بجوار فندق القصر, عزبة السنوسية, شارع 5, الدور الثالث, مرسى مطروح"
+  ];
   @override
-  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    locationProvider = Provider.of<LocationProvider>(context, listen: false);
+    for (var street in streets) {
+      locationProvider.getCoordinatesFromStreetName(street);
+    }
+  }*/
   @override
   Widget build(BuildContext context) {
     LocationProvider locationProvider = Provider.of<LocationProvider>(context);
